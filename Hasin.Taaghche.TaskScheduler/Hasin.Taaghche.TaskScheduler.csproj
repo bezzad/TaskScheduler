@@ -36,7 +36,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Output\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;#TestWithoutNotify</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -180,7 +180,9 @@
     <EmbeddedResource Include="App_Data\installHangfireDatabase.sql" />
     <EmbeddedResource Include="NotificationServices\EmailService\EmailTemplate.html" />
     <None Include="app.manifest" />
-    <None Include="App_Data\TaskSchedulerSetting.json" />
+    <Content Include="TaskSchedulerSetting.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

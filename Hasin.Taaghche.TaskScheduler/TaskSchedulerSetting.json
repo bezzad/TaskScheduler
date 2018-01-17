@@ -6,7 +6,7 @@
             "description": "Call Taaghche purchese web api every hour",
             "actionName": "CallRestApi",
             "actionParameters": {
-                "url": "http://localhost:8001/v1/monitor/payment",
+                "url": "http://localhost:8002/v1/monitor/payment",
                 "httpMethod": "GET",
                 "queryParameters": {
                     "duration": 60,
@@ -25,7 +25,7 @@
             "description": "Call Taaghche purchese web api every hour",
             "actionName": "CallRestApi",
             "actionParameters": {
-                "url": "http://localhost:8001/v1/monitor/payment",
+                "url": "http://localhost:8002/v1/monitor/payment",
                 "httpMethod": "GET",
                 "queryParameters": {
                     "duration": 60,
@@ -44,7 +44,7 @@
             "description": "Call Taaghche download web api every 30 minute",
             "actionName": "CallRestApi",
             "actionParameters": {
-                "url": "http://localhost:8001/v1/monitor/download",
+                "url": "http://localhost:8002/v1/monitor/download",
                 "httpMethod": "GET",
                 "queryParameters": {
                     "duration": 30,
@@ -76,7 +76,7 @@
             "description": "Site map checker every days at 10:00 AM",
             "actionName": "CallRestApi",
             "actionParameters": {
-                "url": "http://localhost:8001/v1/monitor/sitemap",
+                "url": "http://localhost:8002/v1/monitor/sitemap",
                 "queryParameters": {
                     "min": 1 // minimum days
                         //,"url" "sitemap xml path"
@@ -87,24 +87,40 @@
             "notifyConditionResult": "OK: \"\"",
             "triggerOn": "0 10 * * *" // At 10:00 AM daily
         },
-        {
-            "jobType": "Recurring",
-            "enable": true,
-            "name": "Taaghche User Account Creates Checker",
-            "description": "Check taaghche users account create count per minutes",
-            "actionName": "CallRestApi",
-            "actionParameters": {
-                "url": "http://localhost:8001/v1/monitor/account",
-                "queryParameters": {
-                    "duration": 60, // minimum minutes
-                    "min": 0 // account counts
-                },
-                "httpMethod": "GET"
-            },
-            "notifyCondition": "NotEquals",
-            "notifyConditionResult": "OK: \"\"",
-            "triggerOn": "*/120 * * * *" // every 120 min
-        }
+      {
+        "jobType": "Recurring",
+        "enable": true,
+        "name": "Taaghche User Account Creates Checker",
+        "description": "Check taaghche users account create count per minutes",
+        "actionName": "CallRestApi",
+        "actionParameters": {
+          "url": "http://localhost:8002/v1/monitor/account",
+          "queryParameters": {
+            "duration": 60, // minimum minutes
+            "min": 0 // account counts
+          },
+          "httpMethod": "GET"
+        },
+        "notifyCondition": "NotEquals",
+        "notifyConditionResult": "OK: \"\"",
+        "triggerOn": "* */2 * * *" // every 120 min
+      },
+      {
+        "jobType": "Recurring",
+        "enable": true,
+        "name": "Taaghche RabbitMQ uptime Checker",
+        "description": "Check taaghche rabbitmq uptime by sending sample data",
+        "actionName": "CallRestApi",
+        "actionParameters": {
+          "url": "http://localhost:8002/v1/monitor/rabbitmq",
+          "queryParameters": {
+          },
+          "httpMethod": "GET"
+        },
+        "notifyCondition": "NotEquals",
+        "notifyConditionResult": "OK: \"\"",
+        "triggerOn": "*/5 * * * *" // every 5 min
+      }
         // {
         //     "jobType": "Recurring",
         //     "enable": true,
@@ -121,17 +137,18 @@
         //     "triggerOn": "0 12 * * 5" // At 12:00 PM, Only on Friday
         // }
     ],
-    "notifications": [{
-            "notifyType": "Email",
-            "receiver": //"behzad.khosravifar@gmail.com,m.dehghani612@gmail.com,abouzarnouri@gmail.com"
-        },
-        {
-            "notifyType": "Sms",
-            "receiver": ""
-        },
-        {
-            "notifyType": "Telegram",
-            "receiver": "@taaghche_notification, 106752126"
-        }
-    ]
+  "notifications": [
+    {
+      "notifyType": "Email",
+      "receiver": "" // abolfazl.ansari@gmail.com, behzad.khosravifar@gmail.com, m.dehghani612@gmail.com, abouzarnouri@gmail.com
+    },
+    {
+      "notifyType": "Sms",
+      "receiver": ""
+    },
+    {
+      "notifyType": "Telegram",
+      "receiver": "81342321" // , @taaghche_notification, 106752126
+    }
+  ]
 }

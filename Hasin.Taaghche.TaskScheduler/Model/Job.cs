@@ -88,10 +88,9 @@ namespace Hasin.Taaghche.TaskScheduler.Model
             {
                 try
                 {
-#if !DEBUG
+#if !TestWithoutNotify
                     notify.Notifying(body, subject);
 #endif
-
                 }
                 catch (Exception exp)
                 {
