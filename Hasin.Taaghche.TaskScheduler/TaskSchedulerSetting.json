@@ -39,7 +39,7 @@
         },
         {
             "jobType": "Recurring",
-            "enable": true,
+            "enable": false,
             "name": "Taaghche download checker",
             "description": "Call Taaghche download web api every 30 minute",
             "actionName": "CallRestApi",
@@ -89,7 +89,7 @@
         },
       {
         "jobType": "Recurring",
-        "enable": true,
+        "enable": false,
         "name": "Taaghche User Account Creates Checker",
         "description": "Check taaghche users account create count per minutes",
         "actionName": "CallRestApi",
@@ -103,7 +103,7 @@
         },
         "notifyCondition": "NotEquals",
         "notifyConditionResult": "OK: \"\"",
-        "triggerOn": "* */2 * * *" // every 120 min
+        "triggerOn": "0 */2 * * *" // every 120 min
       },
       {
         "jobType": "Recurring",
