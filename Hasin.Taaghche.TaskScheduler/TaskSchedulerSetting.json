@@ -148,7 +148,7 @@
     },
     {
       "notifyType": "Telegram",
-      "receiver": "81342321" // , @taaghche_notification, 106752126
+      "receiver": "81342321, @taaghche_notification" // 106752126
     }
   ]
 }
