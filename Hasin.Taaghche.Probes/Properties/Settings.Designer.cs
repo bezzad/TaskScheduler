@@ -40,5 +40,14 @@ namespace Hasin.Taaghche.Probes.Properties {
                 return ((string)(this["MsUrlV2"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://auth.taaghche.ir/")]
+        public string AuthenticationServerUrl {
+            get {
+                return ((string)(this["AuthenticationServerUrl"]));
+            }
+        }
     }
 }

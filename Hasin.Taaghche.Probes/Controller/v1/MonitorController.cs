@@ -22,7 +22,7 @@ namespace Hasin.Taaghche.Probes.Controller.v1
     ///     <cref>V1.MonitorController{Infrastructure.MotherShipModel.MsInvoice, Core.Model.Wrapper.InvoiceWrapper}</cref>
     /// </seealso>
     [RoutePrefix("v1/monitor")]
-    
+
     public class MonitorController : ApiController
     {
         /*
@@ -170,11 +170,12 @@ namespace Hasin.Taaghche.Probes.Controller.v1
                         break;
                 }
 
-                var response = new TaaghcheRestClient(Properties.Settings.Default.PaymentServerUrl).ExecuteWithAuthorization(new RestRequest(
-                        $"invoices/query/purchase/count",
-                        Method.POST)
-                    .AddJsonBody(filters)
-                );
+                var response = new TaaghcheRestClient(Properties.Settings.Default.PaymentServerUrl)
+                    .ExecuteWithAuthorization(new RestRequest(
+                            $"invoices/query/purchase/count",
+                            Method.POST)
+                        .AddJsonBody(filters)
+                    );
                 var count = response.ReadData<int>();
 
 
@@ -246,7 +247,8 @@ namespace Hasin.Taaghche.Probes.Controller.v1
                             }
                             else
                             {
-                                result = $"Can not read the lastmod of [{loc}] loc, may be that is invalid date format!";
+                                result =
+                                    $"Can not read the lastmod of [{loc}] loc, may be that is invalid date format!";
                                 break;
                             }
                         }
@@ -283,7 +285,7 @@ namespace Hasin.Taaghche.Probes.Controller.v1
             var result = "";
             try
             {
-                var factory = new ConnectionFactory() { HostName = "localhost" };
+                var factory = new ConnectionFactory() {HostName = "localhost"};
                 using (var connection = factory.CreateConnection())
                 using (var channel = connection.CreateModel())
                 {
@@ -304,6 +306,39 @@ namespace Hasin.Taaghche.Probes.Controller.v1
             catch (Exception ex)
             {
                 result = $"Monitoring RabbitMQ failed : {ex.Message}, {ex.InnerException?.Message}";
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Monitor Auth Service.
+        /// </summary>
+        /// <returns>System.String.</returns>
+        [HttpGet]
+        [Route("auth")]
+        public string Auth()
+        {
+            var result = "";
+            try
+            {
+                var url = Properties.Settings.Default.AuthenticationServerUrl + ".well-known/jwks";
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.GET);
+                var response = client.Execute(request);
+                var jwks = response?.Content;
+
+                if (string.IsNullOrEmpty(jwks))
+                {
+                    result = "JWKS is empty";
+                }
+                if (!jwks.Contains("keys"))
+                {
+                    result = "JWKS format has error";
+                }
+            }
+            catch (Exception ex)
+            {
+                result = $"Monitoring sitemap failed : {ex.Message}";
             }
             return result;
         }
