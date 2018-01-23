@@ -295,5 +295,32 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
                 return ((string)(this["ServerConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://pay.taaghche.ir/v1")]
+        public string PaymentServerUrl {
+            get {
+                return ((string)(this["PaymentServerUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8001/v2")]
+        public string MsUrlV2 {
+            get {
+                return ((string)(this["MsUrlV2"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://auth.taaghche.ir/")]
+        public string AuthenticationServerUrl {
+            get {
+                return ((string)(this["AuthenticationServerUrl"]));
+            }
+        }
     }
 }

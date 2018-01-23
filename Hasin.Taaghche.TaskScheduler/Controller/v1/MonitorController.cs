@@ -8,12 +8,12 @@ using System.Xml;
 using Hasin.Taaghche.Infrastructure.AuthenticationClient;
 using Hasin.Taaghche.Infrastructure.MotherShipModel;
 using Hasin.Taaghche.Payment.Defs;
-using Hasin.Taaghche.Probes.Utilities;
+using Hasin.Taaghche.TaskScheduler.Utilities;
 using NLog;
 using RestSharp;
 using RabbitMQ.Client;
 
-namespace Hasin.Taaghche.Probes.Controller.v1
+namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 {
     /// <summary>
     /// Monitor Web API Controller.
@@ -338,7 +338,7 @@ namespace Hasin.Taaghche.Probes.Controller.v1
             }
             catch (Exception ex)
             {
-                result = $"Monitoring sitemap failed : {ex.Message}";
+                result = $"Monitoring jwks failed : {ex.Message}";
             }
             return result;
         }

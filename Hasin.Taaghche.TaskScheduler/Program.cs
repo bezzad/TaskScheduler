@@ -32,7 +32,7 @@ namespace Hasin.Taaghche.TaskScheduler
                 });
                 configurator.Service<Service>(serviceConfigurator =>
                 {
-                    serviceConfigurator.ConstructUsing(settings => new Service(settings, 8003));
+                    serviceConfigurator.ConstructUsing(settings => new Service(settings, 8002));
                     serviceConfigurator.WhenStarted((service) => service.Start());
                     serviceConfigurator.WhenStopped((service) => service.Stop());
                 });

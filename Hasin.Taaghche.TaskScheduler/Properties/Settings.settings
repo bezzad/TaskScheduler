@@ -60,5 +60,14 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=taaghche.hasintech.com;Initial Catalog=task;Persist Security Info=True;User ID=sa;Password=hasin#123456;</Value>
     </Setting>
+    <Setting Name="PaymentServerUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://pay.taaghche.ir/v1</Value>
+    </Setting>
+    <Setting Name="MsUrlV2" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8001/v2</Value>
+    </Setting>
+    <Setting Name="AuthenticationServerUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://auth.taaghche.ir/</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

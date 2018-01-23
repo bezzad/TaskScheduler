@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Hasin.Taaghche.Infrastructure.AuthenticationClient;
 using RestSharp;
 
-namespace Hasin.Taaghche.Probes.Utilities
+namespace Hasin.Taaghche.TaskScheduler.Utilities
 {
     internal static class ClientRequestHelper
     {
