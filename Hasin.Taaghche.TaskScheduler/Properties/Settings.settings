@@ -72,5 +72,8 @@
     <Setting Name="MsMonitorUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://localhost:8001/v1/monitor</Value>
     </Setting>
+    <Setting Name="MsUrlV1" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8001/v1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

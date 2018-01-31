@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Xml;
 using Hasin.Taaghche.Infrastructure.AuthenticationClient;
 using Hasin.Taaghche.Infrastructure.MotherShipModel;
+using Hasin.Taaghche.Infrastructure.MotherShipModel.Report;
 using Hasin.Taaghche.Payment.Defs;
 using Hasin.Taaghche.TaskScheduler.Utilities;
 using NLog;
@@ -91,6 +92,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         }
         */
 
+        /*
         [HttpGet]
         [Route("download")]
         public string Download(int duration, float value)
@@ -104,8 +106,8 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 );
             return response.ReadData<string>();
         }
+        */
 
-        /*
         /// <summary>
         /// Monitor downloads from the specified duration, 
         /// weather is more than value count or not.
@@ -118,34 +120,34 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         /// </returns>
         [HttpGet]
         [Route("download")]
-        public async Task<string> Download(int duration, float value)
+        public string Download(int duration, float value)
         {
             var result = "";
             try
             {
                 var count = -1;
-                count = await V2MsClient.ExecRequestWithAuthAsync<int>("download/query/count",
-                    Method.POST,
-                    new MsDownloadFilters
-                    {
-                        DownloadDateMin: DateTime.Now.AddMinutes(-duration),
-                        DownloadDateMax: DateTime.Now
-                    });
+                var response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV1)
+                    .ExecuteWithAuthorization(new RestRequest(
+                            $"reports/dashboard",
+                            Method.GET)
+                        .AddParameter("startDate", DateTime.Now.AddMinutes(-duration))
+                        .AddParameter("endDate", DateTime.Now)
+                    );
+                count = response.ReadData<RangeData<MsDashboardReport>>().Data.FullDownloads;
 
                 var countPrev = -1;
-                countPrev = await V2MsClient.ExecRequestWithAuthAsync<int>("download/query/count",
-                    Method.POST,
-                    new MsDownloadFilters
-                    {
-                        DownloadDateMin: DateTime.Now.AddMinutes(-duration * 2),
-                        DownloadDateMax: DateTime.Now.AddMinutes(-duration)
-                    });
-
+                response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV1)
+                    .ExecuteWithAuthorization(new RestRequest(
+                            $"reports/dashboard",
+                            Method.GET)
+                        .AddParameter("startDate", DateTime.Now.AddMinutes(-duration * 2))
+                        .AddParameter("endDate", DateTime.Now.AddMinutes(-duration))
+                    );
+                countPrev = response.ReadData<RangeData<MsDashboardReport>>().Data.FullDownloads;
 
                 if (count < countPrev / value)
                 {
-                    result =
-                        $"Count: {count}  {DateTime.Now.AddMinutes(-duration)} - {DateTime.Now}";
+                    result = $"Count: {count} - Previous Count: {countPrev} - Duration: {duration} - value: {value}";
                 }
             }
             catch (Exception ex)
@@ -160,7 +162,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
             return result;
         }
-        */
+
         /// <summary>
         /// Monitor payments from the specified duration, 
         /// weather is more than min amount or not.
