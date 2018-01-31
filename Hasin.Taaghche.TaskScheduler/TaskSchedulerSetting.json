@@ -7,7 +7,7 @@
       "description": "Call Taaghche purchese web api every hour",
       "actionName": "CallRestApi",
       "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/payment",
+        "url": "http://localhost:8001/v1/monitor/payment",
         "httpMethod": "GET",
         "queryParameters": {
           "duration": 60,
@@ -26,7 +26,7 @@
       "description": "Call Taaghche purchese web api every hour",
       "actionName": "CallRestApi",
       "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/payment",
+        "url": "http://localhost:8001/v1/monitor/payment",
         "httpMethod": "GET",
         "queryParameters": {
           "duration": 60,
@@ -40,12 +40,12 @@
     },
     {
       "jobType": "Recurring",
-      "enable": false,
+      "enable": true,
       "name": "Taaghche download checker",
       "description": "Call Taaghche download web api every 30 minute",
       "actionName": "CallRestApi",
       "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/download",
+        "url": "http://localhost:8001/v1/monitor/download",
         "httpMethod": "GET",
         "queryParameters": {
           "duration": 30,
@@ -90,12 +90,12 @@
     },
     {
       "jobType": "Recurring",
-      "enable": false,
+      "enable": true,
       "name": "Taaghche User Account Creates Checker",
       "description": "Check taaghche users account create count per minutes",
       "actionName": "CallRestApi",
       "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/account",
+        "url": "http://localhost:8001/v1/monitor/account",
         "queryParameters": {
           "duration": 60, // minimum minutes
           "min": 0 // account counts
@@ -165,7 +165,7 @@
     },
     {
       "notifyType": "Telegram",
-      "receiver": "81342321, @taaghche_notification" // 106752126
+      "receiver": "@taaghche_notification" // aa:81342321, 106752126
     }
   ]
 }

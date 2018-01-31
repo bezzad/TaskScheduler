@@ -25,6 +25,21 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
     public class MonitorController : ApiController
     {
+
+
+        [HttpGet]
+        [Route("account")]
+        public string Account(int duration, int min)
+        {
+            var response = new TaaghcheRestClient(Properties.Settings.Default.MsMonitorUrl)
+                .ExecuteWithAuthorization(new RestRequest(
+                        $"account",
+                        Method.GET)
+                    .AddParameter("duration", duration)
+                    .AddParameter("min", min)
+                );
+            return response.ReadData<string>();
+        }
         /*
         /// <summary>
         /// Monitor accounts from the specified duration, 
@@ -74,7 +89,23 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
             return result;
         }
+        */
 
+        [HttpGet]
+        [Route("download")]
+        public string Download(int duration, float value)
+        {
+            var response = new TaaghcheRestClient(Properties.Settings.Default.MsMonitorUrl)
+                .ExecuteWithAuthorization(new RestRequest(
+                        $"download",
+                        Method.GET)
+                    .AddParameter("duration", duration)
+                    .AddParameter("value", value)
+                );
+            return response.ReadData<string>();
+        }
+
+        /*
         /// <summary>
         /// Monitor downloads from the specified duration, 
         /// weather is more than value count or not.
