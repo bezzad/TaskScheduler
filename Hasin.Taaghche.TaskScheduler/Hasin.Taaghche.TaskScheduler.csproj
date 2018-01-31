@@ -78,14 +78,14 @@
     <Reference Include="Hasin.Taaghche.Infrastructure.Log, Version=1.11.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hasin.Taaghche.Infrastructure.Log.1.11.0.1\lib\net46\Hasin.Taaghche.Infrastructure.Log.dll</HintPath>
     </Reference>
-    <Reference Include="Hasin.Taaghche.Infrastructure.MotherShipModel, Version=1.9.0.26, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hasin.Taaghche.Infrastructure.MotherShipModel.1.9.0.26\lib\net45\Hasin.Taaghche.Infrastructure.MotherShipModel.dll</HintPath>
+    <Reference Include="Hasin.Taaghche.Infrastructure.MotherShipModel, Version=1.9.0.36, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hasin.Taaghche.Infrastructure.MotherShipModel.1.9.0.36\lib\net45\Hasin.Taaghche.Infrastructure.MotherShipModel.dll</HintPath>
     </Reference>
     <Reference Include="Hasin.Taaghche.Infrastructure.Serialization, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hasin.Taaghche.Infrastructure.Serialization.1.1.0.1\lib\net46\Hasin.Taaghche.Infrastructure.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Hasin.Taaghche.Payment.Defs, Version=1.0.0.30, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hasin.Taaghche.Payment.Defs.1.0.0.30\lib\net46\Hasin.Taaghche.Payment.Defs.dll</HintPath>
+    <Reference Include="Hasin.Taaghche.Payment.Defs, Version=1.0.0.32, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hasin.Taaghche.Payment.Defs.1.0.0.32\lib\net46\Hasin.Taaghche.Payment.Defs.dll</HintPath>
     </Reference>
     <Reference Include="IdentityModel, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IdentityModel.3.0.0\lib\net452\IdentityModel.dll</HintPath>

@@ -27,7 +27,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
     public class MonitorController : ApiController
     {
 
-
+        /*
         [HttpGet]
         [Route("account")]
         public string Account(int duration, int min)
@@ -41,7 +41,9 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 );
             return response.ReadData<string>();
         }
-        /*
+        */
+
+        
         /// <summary>
         /// Monitor accounts from the specified duration, 
         /// weather is more than value count or not.
@@ -54,7 +56,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         /// </returns>
         [HttpGet]
         [Route("account")]
-        public async Task<string> Account(int duration, int min)
+        public string Account(int duration, int min)
         {
             var result = "";
             if (DateTime.Now.Hour < 8)
@@ -62,14 +64,18 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
             try
             {
                 var count = -1;
-                count = await V2MsClient.ExecRequestWithAuthAsync<int>("account/query/count",
-                    Method.POST,
-                    new MsAccountFilters
-                    {
-                        RegisterDateMin: DateTime.Now.AddMinutes(-duration),
-                        RegisterDateMax: DateTime.Now
-                    });
-
+                var response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV2)
+                    .ExecuteWithAuthorization(new RestRequest(
+                            $"user/query/count",
+                            Method.POST)
+                        .AddJsonBody(new MsAccountFilters
+                        {
+                            MinRegisterDate = DateTime.Now.AddMinutes(-duration),
+                            MaxRegisterDate = DateTime.Now,
+                            IsEnabled = true
+                        })
+                    );
+                count = response.ReadData<int>();
 
                 if (count <= min)
                 {
@@ -90,7 +96,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
             return result;
         }
-        */
+        
 
         /*
         [HttpGet]
