@@ -214,6 +214,8 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ClientRequestHelper.cs" />
     <Compile Include="Utilities\Extensions.cs" />
+    <Compile Include="Utilities\IRangeData.cs" />
+    <Compile Include="Utilities\RangeData.cs" />
     <Compile Include="Utilities\RestSharpJsonNetSerializer.cs" />
     <Compile Include="Utilities\V2MsClient.cs" />
   </ItemGroup>

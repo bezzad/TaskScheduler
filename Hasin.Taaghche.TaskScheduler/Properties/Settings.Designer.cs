@@ -331,5 +331,14 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
                 return ((string)(this["MsMonitorUrl"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8001/v1")]
+        public string MsUrlV1 {
+            get {
+                return ((string)(this["MsUrlV1"]));
+            }
+        }
     }
 }
