@@ -238,7 +238,65 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
 
 
+        /// <summary>
+        /// Monitor payments from the specified duration, 
+        /// weather is more than max amount or not.
+        /// </summary>
+        /// <param name="duration">The duration is how minutes monitored from now to past.</param>
+        /// <param name="maxTotal">Threshold of maximum total payment amount.</param>
+        /// <param name="maxPerUser">Threshold of maximum per user payment amount.</param>
+        /// <returns>
+        /// If no problem and payment amount is less than maximum amount then get empty string,
+        /// and else get a message for alert them.
+        /// </returns>
+        [HttpGet]
+        [Route("highpayment")]
+        public string HighPayment(int duration, int maxTotal, int maxPerUser)
+        {
+            var result = "";
 
+            try
+            {
+                var fromDate = DateTime.Now.AddMinutes(-duration);
+                var toDate = DateTime.Now;
+
+                var filters = new PyInvoiceFilters
+                {
+                    Status = PyPaymentStatus.Successful,
+                    FinishDateMin = fromDate,
+                    FinishDateMax = toDate
+                };
+
+                var response = new TaaghcheRestClient(Properties.Settings.Default.PaymentServerUrl)
+                    .ExecuteWithAuthorization(new RestRequest(
+                            $"invoices/report/GroupedByAccount",
+                            Method.POST)
+                        .AddJsonBody(filters)
+                    );
+                var groupedReport = response.ReadData<PyGroupedReport>();
+                var totalBuyCount = groupedReport.TotalBuyCount;
+                var perUserCount = groupedReport.GroupedItems[0].BuyCount;
+
+                if (totalBuyCount >= maxTotal)
+                {
+                    result = $"TotalBuyCount: {totalBuyCount} is more than {maxTotal} from {fromDate} to {toDate}";
+                }
+
+                if (perUserCount >= maxPerUser)
+                {
+                    result = $"PerUserBuyCount: {perUserCount} is more than {maxPerUser} from {fromDate} to {toDate}";
+                }
+            }
+            catch (Exception ex)
+            {
+                result = $"Monitoring payment count failed : {ex.Message}, {ex.InnerException?.Message}";
+            }
+
+            return result;
+        }
+
+
+        
         /// <summary>
         /// Monitor Site map fields last update.
         /// </summary>
