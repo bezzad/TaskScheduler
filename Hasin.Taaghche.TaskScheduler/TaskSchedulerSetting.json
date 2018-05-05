@@ -1,146 +1,203 @@
 ﻿{
-    "jobs": [{
-            "jobType": "Recurring",
-            "enable": true,
-            "name": "Taaghche purchese checker (method: taaghche)",
-            "description": "Call Taaghche purchese web api every hour",
-            "actionName": "CallRestApi",
-            "actionParameters": {
-                "url": "http://localhost:8002/v1/monitor/payment",
-                "httpMethod": "GET",
-                "queryParameters": {
-                    "duration": 60,
-                    "min": 0,
-                    "method": "taaghche"
-                }
-            },
-            "notifyCondition": "NotEquals",
-            "notifyConditionResult": "OK: \"\"",
-            "triggerOn": "0 * * * *" // every hour
-        },
-        {
-            "jobType": "Recurring",
-            "enable": true,
-            "name": "Taaghche purchese checker (method: bpm)",
-            "description": "Call Taaghche purchese web api every hour",
-            "actionName": "CallRestApi",
-            "actionParameters": {
-                "url": "http://localhost:8002/v1/monitor/payment",
-                "httpMethod": "GET",
-                "queryParameters": {
-                    "duration": 60,
-                    "min": 0,
-                    "method": "bpm"
-                }
-            },
-            "notifyCondition": "NotEquals",
-            "notifyConditionResult": "OK: \"\"",
-            "triggerOn": "0 * * * *" // every hour
-        },
-        {
-            "jobType": "Recurring",
-            "enable": false,
-            "name": "Taaghche download checker",
-            "description": "Call Taaghche download web api every 30 minute",
-            "actionName": "CallRestApi",
-            "actionParameters": {
-                "url": "http://localhost:8002/v1/monitor/download",
-                "httpMethod": "GET",
-                "queryParameters": {
-                    "duration": 30,
-                    "value": 4.0
-                }
-            },
-            "notifyCondition": "NotEquals",
-            "notifyConditionResult": "OK: \"\"",
-            "triggerOn": "*/30 * * * *" // every 30 minutes
-        },
-        {
-            "jobType": "Recurring",
-            "enable": true,
-            "name": "Taaghche Site map creator",
-            "description": "Site map refresher every days at 08:00 AM",
-            "actionName": "CallRestApi",
-            "actionParameters": {
-                "url": "http://192.168.2.2:4000/createsitemap",
-                "httpMethod": "GET"
-            },
-            "notifyCondition": "NotEquals",
-            "notifyConditionResult": "OK: Done",
-            "triggerOn": "0 8 * * *" // At 08:00 AM daily
-        },
-        {
-            "jobType": "Recurring",
-            "enable": true,
-            "name": "Taaghche Site map checker",
-            "description": "Site map checker every days at 10:00 AM",
-            "actionName": "CallRestApi",
-            "actionParameters": {
-                "url": "http://localhost:8002/v1/monitor/sitemap",
-                "queryParameters": {
-                    "min": 1 // minimum days
-                        //,"url" "sitemap xml path"
-                },
-                "httpMethod": "GET"
-            },
-            "notifyCondition": "NotEquals",
-            "notifyConditionResult": "OK: \"\"",
-            "triggerOn": "0 10 * * *" // At 10:00 AM daily
-        },
-      {
-        "jobType": "Recurring",
-        "enable": false,
-        "name": "Taaghche User Account Creates Checker",
-        "description": "Check taaghche users account create count per minutes",
-        "actionName": "CallRestApi",
-        "actionParameters": {
-          "url": "http://localhost:8002/v1/monitor/account",
-          "queryParameters": {
-            "duration": 60, // minimum minutes
-            "min": 0 // account counts
-          },
-          "httpMethod": "GET"
-        },
-        "notifyCondition": "NotEquals",
-        "notifyConditionResult": "OK: \"\"",
-        "triggerOn": "0 */2 * * *" // every 120 min
+  "jobs": [
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche purchese checker (method: taaghche)",
+      "description": "Call Taaghche purchese web api every hour",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/payment",
+        "httpMethod": "GET",
+        "queryParameters": {
+          "duration": 60,
+          "min": 0,
+          "method": "taaghche"
+        }
       },
-      {
-        "jobType": "Recurring",
-        "enable": true,
-        "name": "Taaghche RabbitMQ uptime Checker",
-        "description": "Check taaghche rabbitmq uptime by sending sample data",
-        "actionName": "CallRestApi",
-        "actionParameters": {
-          "url": "http://localhost:8002/v1/monitor/rabbitmq",
-          "queryParameters": {
-          },
-          "httpMethod": "GET"
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "0 * * * *" // every hour
+    },
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche purchese checker (method: bpm)",
+      "description": "Call Taaghche purchese web api every hour",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/payment",
+        "httpMethod": "GET",
+        "queryParameters": {
+          "duration": 60,
+          "min": 0,
+          "method": "bpm"
+        }
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "0 * * * *" // every hour
+    },
+
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche max-purchese checker (per hour)",
+      "description": "Call Taaghche purchese web api every hour for max purchase",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/highpayment",
+        "httpMethod": "GET",
+        "queryParameters": {
+          "duration": 60,
+          "maxTotal": 200,
+          "maxPerUser": 20
+        }
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "0 * * * *" // every hour
+    },
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche max-purchese checker (per day)",
+      "description": "Call Taaghche purchese web api every day for max purchase",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/highpayment",
+        "httpMethod": "GET",
+        "queryParameters": {
+          "duration": 1440,
+          "maxTotal": 1000,
+          "maxPerUser": 30
+        }
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "0 9 * * *" // every day
+    },
+
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche download checker",
+      "description": "Call Taaghche download web api every 30 minute",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/download",
+        "httpMethod": "GET",
+        "queryParameters": {
+          "duration": 30,
+          "value": 4.0
+        }
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "*/30 * * * *" // every 30 minutes
+    },
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche Site map creator",
+      "description": "Site map refresher every days at 08:00 AM",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://192.168.2.2:4000/createsitemap",
+        "httpMethod": "GET"
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: Done",
+      "triggerOn": "0 8 * * *" // At 08:00 AM daily
+    },
+    {
+      "jobType": "Recurring",
+      "enable": false,
+      "name": "Taaghche Site map checker",
+      "description": "Site map checker every days at 10:00 AM",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/sitemap",
+        "queryParameters": {
+          "min": 1 // minimum days
+          //,"url" "sitemap xml path"
         },
-        "notifyCondition": "NotEquals",
-        "notifyConditionResult": "OK: \"\"",
-        "triggerOn": "*/5 * * * *" // every 5 min
-      }
-        // {
-        //     "jobType": "Recurring",
-        //     "enable": true,
-        //     "name": "Taaghche log",
-        //     "description": "Remove more than 7 days ago files",
-        //     "actionName": "StartProgram",
-        //     "actionParameters": {
-        //         "fileName": "forfiles",
-        //         "arguments": "/p \"C:\\inetpub\\logs\\LogFiles\" /s /m *.* /c \"cmd /c Del @path\" /d -7",
-        //         "windowsStyle": "Hidden",
-        //         "createNoWindow": true,
-        //         "useShellExecute": false
-        //     },
-        //     "triggerOn": "0 12 * * 5" // At 12:00 PM, Only on Friday
-        // }
-    ],
+        "httpMethod": "GET"
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "0 10 * * *" // At 10:00 AM daily
+    },
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche User Account Creates Checker",
+      "description": "Check taaghche users account create count per minutes",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/account",
+        "queryParameters": {
+          "duration": 60, // minimum minutes
+          "min": 0 // account counts
+        },
+        "httpMethod": "GET"
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "0 */2 * * *" // every 120 min
+    },
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche RabbitMQ uptime Checker",
+      "description": "Check taaghche rabbitmq uptime by sending sample data",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/rabbitmq",
+        "queryParameters": {
+        },
+        "httpMethod": "GET"
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "*/5 * * * *" // every 5 min
+    },
+    {
+      "jobType": "Recurring",
+      "enable": true,
+      "name": "Taaghche Auth service Checker",
+      "description": "Check taaghche auth service by getting jwks data",
+      "actionName": "CallRestApi",
+      "actionParameters": {
+        "url": "http://localhost:8002/v1/monitor/auth",
+        "queryParameters": {
+        },
+        "httpMethod": "GET"
+      },
+      "notifyCondition": "NotEquals",
+      "notifyConditionResult": "OK: \"\"",
+      "triggerOn": "*/5 * * * *" // every 5 min
+    }
+    // {
+    //     "jobType": "Recurring",
+    //     "enable": true,
+    //     "name": "Taaghche log",
+    //     "description": "Remove more than 7 days ago files",
+    //     "actionName": "StartProgram",
+    //     "actionParameters": {
+    //         "fileName": "forfiles",
+    //         "arguments": "/p \"C:\\inetpub\\logs\\LogFiles\" /s /m *.* /c \"cmd /c Del @path\" /d -7",
+    //         "windowsStyle": "Hidden",
+    //         "createNoWindow": true,
+    //         "useShellExecute": false
+    //     },
+    //     "triggerOn": "0 12 * * 5" // At 12:00 PM, Only on Friday
+    // }
+  ],
   "notifications": [
     {
       "notifyType": "Email",
-      "receiver": "" // abolfazl.ansari@gmail.com, behzad.khosravifar@gmail.com, m.dehghani612@gmail.com, abouzarnouri@gmail.com
+      "receiver": "abolfazl.ansari@gmail.com, behzad.khosravifar@gmail.com, m.dehghani612@gmail.com, abouzarnouri@gmail.com" //
     },
     {
       "notifyType": "Sms",
@@ -148,7 +205,7 @@
     },
     {
       "notifyType": "Telegram",
-      "receiver": "81342321, @taaghche_notification" // 106752126
+      "receiver": "@taaghche_notification" // aa:81342321, 106752126, @taaghche_notification
     }
   ]
 }

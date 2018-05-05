@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RestSharp.Serializers;
 
-namespace Hasin.Taaghche.Probes.Utilities
+namespace Hasin.Taaghche.TaskScheduler.Utilities
 {
     // from https://github.com/restsharp/RestSharp/blob/86b31f9adf049d7fb821de8279154f41a17b36f7/RestSharp/Serializers/JsonSerializer.cs
     public class RestSharpJsonNetSerializer : ISerializer

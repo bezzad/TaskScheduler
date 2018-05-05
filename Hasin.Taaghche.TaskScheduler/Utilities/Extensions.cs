@@ -7,7 +7,7 @@ using System.Web.Http;
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace Hasin.Taaghche.Probes.Utilities
+namespace Hasin.Taaghche.TaskScheduler.Utilities
 {
     internal static class Extensions
     {

@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Hasin.Taaghche.Infrastructure.AuthenticationClient;
-using Hasin.Taaghche.Probes.Properties;
+using Hasin.Taaghche.TaskScheduler.Properties;
 using Newtonsoft.Json;
 using NLog;
 using RestSharp;
 
-namespace Hasin.Taaghche.Probes.Utilities
+namespace Hasin.Taaghche.TaskScheduler.Utilities
 {
     class V2MsClient
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Web.Http;
 using AdoManager;
 using Owin;
 using Hangfire;
@@ -24,6 +25,15 @@ namespace Hasin.Taaghche.TaskScheduler
 
             app.UseNLog();
             LogProvider.SetCurrentLogProvider(new ColouredConsoleLogProvider());
+
+            #endregion
+
+            #region Configure Web API
+
+            // Configure Web API for self-host. 
+            var config = new HttpConfiguration();
+            config.MapHttpAttributeRoutes();
+            app.UseWebApi(config);
 
             #endregion
 
