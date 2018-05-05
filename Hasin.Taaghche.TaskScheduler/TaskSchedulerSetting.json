@@ -197,7 +197,7 @@
   "notifications": [
     {
       "notifyType": "Email",
-      "receiver": "" // abolfazl.ansari@gmail.com, behzad.khosravifar@gmail.com, m.dehghani612@gmail.com, abouzarnouri@gmail.com
+      "receiver": "abolfazl.ansari@gmail.com, behzad.khosravifar@gmail.com, m.dehghani612@gmail.com, abouzarnouri@gmail.com" //
     },
     {
       "notifyType": "Sms",
