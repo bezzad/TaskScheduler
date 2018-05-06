@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Hasin.Taaghche.TaskScheduler.NotificationServices;
-using Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApiService;
-using Hasin.Taaghche.TaskScheduler.NotificationServices.EmailService;
-using Hasin.Taaghche.TaskScheduler.NotificationServices.ShortMessageService;
-using Hasin.Taaghche.TaskScheduler.NotificationServices.TelegramService;
+using Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApi;
+using Hasin.Taaghche.TaskScheduler.NotificationServices.Email;
+using Hasin.Taaghche.TaskScheduler.NotificationServices.SMS;
+using Hasin.Taaghche.TaskScheduler.NotificationServices.Telegram;
 using Hasin.Taaghche.TaskScheduler.Properties;
 
 namespace Hasin.Taaghche.TaskScheduler.Helper

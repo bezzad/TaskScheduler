@@ -15,8 +15,6 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
         [JsonProperty(PropertyName = "receiver", NullValueHandling = NullValueHandling.Include)]
         public string Receiver { get; set; }
 
-
-
         
 
         public void Notifying(string message, string subject)
@@ -34,7 +32,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
 
         public bool Equals(Notification x, Notification y)
         {
-            return x.Equals(y);
+            return x?.Equals(y) == true;
         }
 
         public int GetHashCode(Notification obj)
@@ -62,9 +60,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
 
         public static bool operator ==(Notification notifyA, Notification notifyB)
         {
-            return ReferenceEquals(notifyA, null)
-                ? ReferenceEquals(notifyB, null)
-                : notifyA.Equals(notifyB);
+            return notifyA?.Equals(notifyB) ?? ReferenceEquals(notifyB, null);
         }
 
         public static bool operator !=(Notification notifyA, Notification notifyB)

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Hasin.Taaghche.TaskScheduler.Helper;
-using Hasin.Taaghche.TaskScheduler.Service_References.GamamnSmsService;
 
-namespace Hasin.Taaghche.TaskScheduler.NotificationServices.ShortMessageService
+namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
 {
     public class SmsService : NotificationService
     {

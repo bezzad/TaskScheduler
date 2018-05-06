@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Hasin.Taaghche.TaskScheduler.Helper;
 using Hasin.Taaghche.TaskScheduler.Properties;
 
-namespace Hasin.Taaghche.TaskScheduler.NotificationServices.EmailService
+namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Email
 {
     public class EmailService : NotificationService
     {
@@ -79,7 +79,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.EmailService
         private MailMessage GetMailMessage(string receiver, string message, string subject)
         {
             // Construct the alternate body as HTML.
-            var body = FileManager.ReadResourceFile("NotificationServices.EmailService.EmailTemplate.html");
+            var body = FileManager.ReadResourceFile("NotificationServices.Email.EmailTemplate.html");
 
             body = body
                 ?.Replace("{receiver}", receiver.Replace(".", "_"))

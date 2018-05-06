@@ -7,7 +7,7 @@ using Hasin.Taaghche.TaskScheduler.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApiService
+namespace Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApi
 {
     [Guid("1bb06225-093f-0f47-ff10-e880d4d940bc")]
     public class CallRestApiService : NotificationService

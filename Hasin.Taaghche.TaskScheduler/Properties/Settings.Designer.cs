@@ -12,7 +12,7 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -296,48 +296,63 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://pay.taaghche.ir/v1")]
         public string PaymentServerUrl {
             get {
                 return ((string)(this["PaymentServerUrl"]));
             }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8001/v2")]
-        public string MsUrlV2 {
-            get {
-                return ((string)(this["MsUrlV2"]));
+            set {
+                this["PaymentServerUrl"] = value;
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://auth.taaghche.ir/")]
         public string AuthenticationServerUrl {
             get {
                 return ((string)(this["AuthenticationServerUrl"]));
             }
+            set {
+                this["AuthenticationServerUrl"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8001/v1/monitor")]
         public string MsMonitorUrl {
             get {
                 return ((string)(this["MsMonitorUrl"]));
             }
+            set {
+                this["MsMonitorUrl"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8001/v1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://api.taaghche.ir:8001/v2")]
+        public string MsUrlV2 {
+            get {
+                return ((string)(this["MsUrlV2"]));
+            }
+            set {
+                this["MsUrlV2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://api.taaghche.ir:8001/v1")]
         public string MsUrlV1 {
             get {
                 return ((string)(this["MsUrlV1"]));
+            }
+            set {
+                this["MsUrlV1"] = value;
             }
         }
     }

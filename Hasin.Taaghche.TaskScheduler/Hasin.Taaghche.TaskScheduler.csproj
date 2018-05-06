@@ -194,15 +194,16 @@
     <Compile Include="Model\Enum\JobType.cs" />
     <Compile Include="Model\JobsSetting.cs" />
     <Compile Include="Model\Recurring.cs" />
-    <Compile Include="NotificationServices\CallRestApiService\CallRestApiService.cs" />
-    <Compile Include="NotificationServices\EmailService\EmailService.cs" />
+    <Compile Include="NotificationServices\CallRestApi\CallRestApiService.cs" />
+    <Compile Include="NotificationServices\Email\EmailService.cs" />
     <Compile Include="NotificationServices\INotificationService.cs" />
     <Compile Include="NotificationServices\NotificaionType.cs" />
     <Compile Include="NotificationServices\Notification.cs" />
     <Compile Include="NotificationServices\NotificationService.cs" />
     <Compile Include="NotificationServices\NotifyCondition.cs" />
-    <Compile Include="NotificationServices\ShortMessageService\RahyabSmsService.cs" />
-    <Compile Include="NotificationServices\TelegramService\TelegramService.cs" />
+    <Compile Include="NotificationServices\SMS\RahyabSmsService.cs" />
+    <Compile Include="NotificationServices\Slack\SlackService.cs" />
+    <Compile Include="NotificationServices\Telegram\TelegramService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -215,8 +216,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="NotificationServices\ShortMessageService\CellphoneNumber.cs" />
-    <Compile Include="NotificationServices\ShortMessageService\SmsService.cs" />
+    <Compile Include="NotificationServices\SMS\CellphoneNumber.cs" />
+    <Compile Include="NotificationServices\SMS\SmsService.cs" />
     <Compile Include="NotificationServices\Status.cs" />
     <Compile Include="NotificationServices\SystemNotification.cs" />
     <Compile Include="Service.cs" />
@@ -230,7 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_Data\installHangfireDatabase.sql" />
-    <EmbeddedResource Include="NotificationServices\EmailService\EmailTemplate.html" />
+    <EmbeddedResource Include="NotificationServices\Email\EmailTemplate.html" />
     <None Include="app.manifest" />
     <Content Include="TaskSchedulerSetting.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

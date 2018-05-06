@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using Hasin.Taaghche.TaskScheduler.Helper;
 using Hasin.Taaghche.TaskScheduler.NotificationServices;
-using Hasin.Taaghche.TaskScheduler.NotificationServices.ShortMessageService;
 using Newtonsoft.Json.Linq;
 using NLog;
 using RestSharp;
