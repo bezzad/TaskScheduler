@@ -279,19 +279,19 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
                 if (totalBuyCount >= maxTotal)
                 {
-                    result = "Total payment count is more than normal limit in specified duration. \n";
-                    result += $"TotalBuyCount: {totalBuyCount} is more than {maxTotal} from {fromDate} to {toDate} \n";
+                    result = "Total payment count is more than normal limit in specified duration. <br/> ";
+                    result += $"TotalBuyCount: {totalBuyCount} is more than {maxTotal} from {fromDate} to {toDate} <br/> ";
                 }
 
                 if (perUserCount >= maxPerUser)
                 {
-                    result = "Some users have a payment count more than normal limit in specified duration. \n";
-                    result += $"PerUserBuyCount: {perUserCount} is more than {maxPerUser} from {fromDate} to {toDate} \n";
+                    result = "Some users have a payment count more than normal limit in specified duration. <br/> ";
+                    result += $"PerUserBuyCount: {perUserCount} is more than {maxPerUser} from {fromDate} to {toDate} <br/> ";
                     foreach (var item in groupedReport.GroupedItems)
                     {
                         if (item.BuyCount >= maxPerUser)
                         {
-                            result += $"user id: {item.Id} - buy count: {item.BuyCount} \n";
+                            result += $"user id: {item.Id} - buy count: {item.BuyCount} <br/> ";
                         }
                     }
                 }
