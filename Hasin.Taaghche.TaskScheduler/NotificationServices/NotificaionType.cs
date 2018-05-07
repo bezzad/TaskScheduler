@@ -5,6 +5,7 @@
         Email,
         Sms,
         Telegram,
+        Slack,
         CallRestApi
     }
 }

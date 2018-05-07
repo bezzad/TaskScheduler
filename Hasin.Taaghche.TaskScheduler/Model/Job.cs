@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.ServiceModel;
 using Hasin.Taaghche.TaskScheduler.Core;
 using Hasin.Taaghche.TaskScheduler.Helper;
 using Hasin.Taaghche.TaskScheduler.Model.Enum;
 using Hasin.Taaghche.TaskScheduler.NotificationServices;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using NLog;
 using static System.String;
 
@@ -69,33 +73,37 @@ namespace Hasin.Taaghche.TaskScheduler.Model
 
         public void OnTriggerNotification(string result)
         {
-            if (Notifications == null || !Notifications.Any() ||  NotifyCondition == NotifyCondition.None) return;
-            var subject = $"{Name}";
+            if (Notifications == null || !Notifications.Any() || NotifyCondition == NotifyCondition.None) return;
 
-            var body = $"\n{result}\n\n" +
+            var subject = Debugger.IsAttached ? $"DEBUG MODE\t-\t{Name}" : Name;
+            var body = $"\nResult: {result}\n\n" +
                        $"Action: {ActionName}\n";
-            if (ActionParameters != null && ActionParameters.Any())
-            {
-                body += "Arguments: {\n";
 
+            if (ActionParameters?.Any() == true)
+            {
+                body += "Arguments: \n";
                 foreach (var arg in ActionParameters.Where((k, v) => !IsNullOrEmpty(v.ToString())))
                 {
-                    body += $"\t {arg.Key} = {arg.Value} \n";
+                    var val = Concat(arg.Value.ToString()
+                        .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => $"{x}\n\t"));
+                    val = val.Remove(val.LastIndexOf('\t'));
+                    body += $"  + {arg.Key}: {val}";
                 }
-                body += "}\n";
+                body = body.Replace("\"", "");
             }
+
             foreach (var notify in Notifications.Where(n => CompareByNotifyCondition(result)))
             {
                 try
                 {
 #if !TestWithoutNotify
-                    notify.Notifying(body, subject);
+                    notify.Notifying(message: body, subject: subject);
 #endif
                 }
                 catch (Exception exp)
                 {
                     Nlogger.Error(exp);
-                    continue;
                 }
             }
         }
@@ -117,9 +125,9 @@ namespace Hasin.Taaghche.TaskScheduler.Model
             NotifyConditionResult = job.NotifyConditionResult;
         }
 
-#endregion
+        #endregion
 
-#region Constructors
+        #region Constructors
 
         public Job() { }
 
@@ -128,6 +136,6 @@ namespace Hasin.Taaghche.TaskScheduler.Model
             MapToThis(job);
         }
 
-#endregion
+        #endregion
     }
 }

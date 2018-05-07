@@ -1,6 +1,6 @@
 ﻿using RestSharp;
 
-namespace Hasin.Taaghche.TaskScheduler.NotificationServices.ShortMessageService
+namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
 {
     public class RahyabSmsService
     {

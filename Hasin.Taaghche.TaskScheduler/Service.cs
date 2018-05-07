@@ -59,8 +59,8 @@ namespace Hasin.Taaghche.TaskScheduler
                 {
                     // Start OWIN host 
                     _webServer = WebApp.Start<Startup>($"http://+:{_port}");
-
                     _logger.Info($"Server running on port {_port}");
+                    Process.Start($"http://localhost:{_port}/hangfire");
                 });
                // _service.SetApartmentState(ApartmentState.STA); // cause to run slower
                 _service.Priority = ThreadPriority.AboveNormal;

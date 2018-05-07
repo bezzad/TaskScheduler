@@ -12,7 +12,7 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -293,6 +293,79 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
         public string ServerConnectionString {
             get {
                 return ((string)(this["ServerConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://pay.taaghche.ir/v1")]
+        public string PaymentServerUrl {
+            get {
+                return ((string)(this["PaymentServerUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://auth.taaghche.ir/")]
+        public string AuthenticationServerUrl {
+            get {
+                return ((string)(this["AuthenticationServerUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8001/v1/monitor")]
+        public string MsMonitorUrl {
+            get {
+                return ((string)(this["MsMonitorUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://api.taaghche.ir:8001/v2")]
+        public string MsUrlV2 {
+            get {
+                return ((string)(this["MsUrlV2"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://api.taaghche.ir:8001/v1")]
+        public string MsUrlV1 {
+            get {
+                return ((string)(this["MsUrlV1"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://hooks.slack.com/services/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")]
+        public string SlackWebhookUrl {
+            get {
+                return ((string)(this["SlackWebhookUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://a.slack-edge.com/9c217/img/loading_hash_animation.gif")]
+        public string SlackIconUrl {
+            get {
+                return ((string)(this["SlackIconUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=.; Persist Security Info=False; Integrated Security=true; Initial Catalog=" +
+            "Task;")]
+        public string LocalConnectionString {
+            get {
+                return ((string)(this["LocalConnectionString"]));
             }
         }
     }

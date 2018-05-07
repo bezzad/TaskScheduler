@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Hasin.Taaghche.TaskScheduler.Helper;
 using Telegram.Bot;
 
-namespace Hasin.Taaghche.TaskScheduler.NotificationServices.TelegramService
+namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Telegram
 {
     public class TelegramService : NotificationService
     {
         public static TelegramBotClient Bot { get; set; }
-        
+
         public TelegramService(string userName, string apiKey, string senderBot)
             : base(userName, apiKey, senderBot)
         {
@@ -29,13 +29,16 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.TelegramService
         public override SystemNotification Send(string receiver, string message, string subject)
         {
             var completed = true;
-            if (string.IsNullOrEmpty(receiver)) return SystemNotification.InvalidOperation;
-                foreach (var id in receiver.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+            if (string.IsNullOrEmpty(receiver))
+                return SystemNotification.InvalidOperation;
+            
+            foreach (var id in receiver.SplitUp())
+            {
+                Task.Run(async () =>
                 {
                     try
                     {
-                        Logger.Info($"Sending telegram to id: {id} ...");
-                        var result = Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}").Result;
+                        await Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}");
                         Logger.Info($"Telegram message sent to {id} id successful.");
                     }
                     catch (Exception ex)
@@ -43,18 +46,21 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.TelegramService
                         Logger.Fatal(ex, $"Send telegram failed for telegram id: {id}");
                         completed = false;
                     }
-                }
-            
-            return completed ? SystemNotification.SuccessfullyDone : SystemNotification.InternalError;
+                });
+            }
+
+            return completed
+                ? SystemNotification.SuccessfullyDone
+                : SystemNotification.InternalError;
         }
 
         public override async Task<SystemNotification> SendAsync(string receiver, string message, string subject)
         {
             if (string.IsNullOrEmpty(receiver)) return SystemNotification.InvalidOperation;
-            bool completed = true;
+            var completed = true;
             var tasks = new List<Task>();
-
-            foreach (var id in receiver.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+            var ids = receiver.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var id in ids)
             {
                 try
                 {
@@ -73,7 +79,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.TelegramService
             return completed ? SystemNotification.SuccessfullyDone : SystemNotification.InternalError;
         }
 
-        protected void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
+        protected void Bot_OnMessage(object sender, global::Telegram.Bot.Args.MessageEventArgs e)
         {
             Logger.Info($"The {e.Message.From.Username} user call notification bot by message: {e.Message.Text}");
             Bot.SendTextMessageAsync(e.Message.From.Id, e.Message.From.Id.ToString());
