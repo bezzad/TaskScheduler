@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Xml;
 using Hasin.Taaghche.Infrastructure.AuthenticationClient;
@@ -10,7 +9,6 @@ using Hasin.Taaghche.Infrastructure.MotherShipModel;
 using Hasin.Taaghche.Infrastructure.MotherShipModel.Report;
 using Hasin.Taaghche.Payment.Defs;
 using Hasin.Taaghche.TaskScheduler.Utilities;
-using NLog;
 using RestSharp;
 using RabbitMQ.Client;
 
@@ -26,24 +24,6 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
     public class MonitorController : ApiController
     {
-
-        /*
-        [HttpGet]
-        [Route("account")]
-        public string Account(int duration, int min)
-        {
-            var response = new TaaghcheRestClient(Properties.Settings.Default.MsMonitorUrl)
-                .ExecuteWithAuthorization(new RestRequest(
-                        $"account",
-                        Method.GET)
-                    .AddParameter("duration", duration)
-                    .AddParameter("min", min)
-                );
-            return response.ReadData<string>();
-        }
-        */
-
-        
         /// <summary>
         /// Monitor accounts from the specified duration, 
         /// weather is more than value count or not.
@@ -59,14 +39,14 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         public string Account(int duration, int min)
         {
             var result = "";
+
             if (DateTime.Now.Hour < 8)
                 return result;
             try
             {
-                var count = -1;
                 var response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV2)
                     .ExecuteWithAuthorization(new RestRequest(
-                            $"user/query/count",
+                            "user/query/count",
                             Method.POST)
                         .AddJsonBody(new MsAccountFilters
                         {
@@ -75,7 +55,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                             IsEnabled = true
                         })
                     );
-                count = response.ReadData<int>();
+                var count = response.ReadData<int>();
 
                 if (count <= min)
                 {
@@ -89,30 +69,8 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 result = $"Monitoring account register count failed : {ex.Message}";
             }
 
-            if (!string.IsNullOrWhiteSpace(result))
-            {
-                //SendWarningEmails(result);
-            }
-
             return result;
         }
-        
-
-        /*
-        [HttpGet]
-        [Route("download")]
-        public string Download(int duration, float value)
-        {
-            var response = new TaaghcheRestClient(Properties.Settings.Default.MsMonitorUrl)
-                .ExecuteWithAuthorization(new RestRequest(
-                        $"download",
-                        Method.GET)
-                    .AddParameter("duration", duration)
-                    .AddParameter("value", value)
-                );
-            return response.ReadData<string>();
-        }
-        */
 
         /// <summary>
         /// Monitor downloads from the specified duration, 
@@ -131,25 +89,21 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
             var result = "";
             try
             {
-                var count = -1;
                 var response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV1)
-                    .ExecuteWithAuthorization(new RestRequest(
-                            $"reports/dashboard",
-                            Method.GET)
+                    .ExecuteWithAuthorization(new RestRequest("reports/dashboard", Method.GET)
                         .AddParameter("startDate", DateTime.Now.AddMinutes(-duration))
                         .AddParameter("endDate", DateTime.Now)
                     );
-                count = response.ReadData<RangeData<MsDashboardReport>>().Data.FullDownloads;
+                var count = response.ReadData<RangeData<MsDashboardReport>>().Data.FullDownloads;
 
-                var countPrev = -1;
                 response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV1)
                     .ExecuteWithAuthorization(new RestRequest(
-                            $"reports/dashboard",
+                            "reports/dashboard",
                             Method.GET)
                         .AddParameter("startDate", DateTime.Now.AddMinutes(-duration * 2))
                         .AddParameter("endDate", DateTime.Now.AddMinutes(-duration))
                     );
-                countPrev = response.ReadData<RangeData<MsDashboardReport>>().Data.FullDownloads;
+                var countPrev = response.ReadData<RangeData<MsDashboardReport>>().Data.FullDownloads;
 
                 if (count < countPrev / value)
                 {
@@ -159,11 +113,6 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
             catch (Exception ex)
             {
                 result = $"Monitoring download count failed : {ex.Message}";
-            }
-
-            if (!string.IsNullOrWhiteSpace(result))
-            {
-                //SendWarningEmails(result);
             }
 
             return result;
@@ -211,7 +160,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
                 var response = new TaaghcheRestClient(Properties.Settings.Default.PaymentServerUrl)
                     .ExecuteWithAuthorization(new RestRequest(
-                            $"invoices/query/purchase/count",
+                            "invoices/query/purchase/count",
                             Method.POST)
                         .AddJsonBody(filters)
                     );
@@ -229,14 +178,8 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 result = $"Monitoring payment count failed : {ex.Message}, {ex.InnerException?.Message}";
             }
 
-            if (!string.IsNullOrWhiteSpace(result))
-            {
-                //SendWarningEmails(result);
-            }
             return result;
         }
-
-
 
         /// <summary>
         /// Monitor payments from the specified duration, 
@@ -268,9 +211,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 };
 
                 var response = new TaaghcheRestClient(Properties.Settings.Default.PaymentServerUrl)
-                    .ExecuteWithAuthorization(new RestRequest(
-                            $"invoices/report/GroupedByAccount",
-                            Method.POST)
+                    .ExecuteWithAuthorization(new RestRequest("invoices/report/GroupedByAccount", Method.POST)
                         .AddJsonBody(filters)
                     );
                 var groupedReport = response.ReadData<PyGroupedReport>();
@@ -303,8 +244,6 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
             return result;
         }
-
-
         
         /// <summary>
         /// Monitor Site map fields last update.
@@ -317,9 +256,9 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         public string Sitemap(string url = @"https://taaghche.ir/sitemap/books.xml", int min = 1)
         {
             Thread.CurrentThread.CurrentCulture =
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en");
+                Thread.CurrentThread.CurrentUICulture =
+                    CultureInfo.GetCultureInfo("en");
 
-            var result = "";
             try
             {
                 var client = new RestClient(url);
@@ -327,56 +266,41 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 var response = client.Execute(request);
                 var sitemap = response?.Content;
 
-                if (string.IsNullOrEmpty(sitemap)) result = "Sitemap is empty";
-                else
-                {
-                    var xml = new XmlDocument();
-                    xml.LoadXml(sitemap); // suppose that sitemap contains "<url>...</url>"
-                    var urls = (xml["urlset"] ?? xml["sitemapindex"])?.ChildNodes;
+                if (string.IsNullOrEmpty(sitemap))
+                    return "Sitemap is empty";
 
-                    if (urls != null)
+                var xml = new XmlDocument();
+                xml.LoadXml(sitemap); // suppose that sitemap contains "<url>...</url>"
+                var urls = (xml["urlset"] ?? xml["sitemapindex"])?.ChildNodes;
+
+                if (urls == null) return "Sitmap urls is empty!";
+
+                foreach (XmlNode xn in urls)
+                {
+                    var loc = xn["loc"]?.InnerText;
+                    var lastmod = xn["lastmod"]?.InnerText;
+                    if (DateTime.TryParse(lastmod, out var date))
                     {
-                        foreach (XmlNode xn in urls)
+                        if (DateTime.Now.AddDays(-min).Date > date.Date)
                         {
-                            var loc = xn["loc"]?.InnerText;
-                            var lastmod = xn["lastmod"]?.InnerText;
-                            DateTime date;
-                            if (DateTime.TryParse(lastmod, out date))
-                            {
-                                if (DateTime.Now.AddDays(-min).Date > date.Date)
-                                {
-                                    result =
-                                        $"Sitemap has at least one no updated field's from {DateTime.Now.AddDays(-min):d} to now. \n" +
-                                        $"It mean's the lastmod ({date:d}) of [{loc}] loc is more than sitemap update period (every {min} day).";
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                result =
-                                    $"Can not read the lastmod of [{loc}] loc, may be that is invalid date format!";
-                                break;
-                            }
+                            return
+                                $"Sitemap has at least one no updated field's from {DateTime.Now.AddDays(-min):d} to now. \n" +
+                                $"It mean's the lastmod ({date:d}) of [{loc}] loc is more than sitemap update period (every {min} day).";
                         }
                     }
                     else
                     {
-                        result = "Sitmap urls is empty!";
+                        return
+                            $"Can not read the lastmod of [{loc}] loc, may be that is invalid date format!";
                     }
                 }
 
+                return "OK";
             }
             catch (Exception ex)
             {
-                result = $"Monitoring sitemap failed : {ex.Message}";
+                return $"Monitoring sitemap failed : {ex.Message}";
             }
-
-            if (!string.IsNullOrWhiteSpace(result))
-            {
-                //SendWarningEmails(result);
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -391,7 +315,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
             var result = "";
             try
             {
-                var factory = new ConnectionFactory() {HostName = "localhost"};
+                var factory = new ConnectionFactory() { HostName = "localhost" };
                 using (var connection = factory.CreateConnection())
                 using (var channel = connection.CreateModel())
                 {
@@ -400,8 +324,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                         type: "topic"
                     );
 
-                    string message = "Test RabbitMQ";
-                    var body = Encoding.UTF8.GetBytes(message);
+                    var body = Encoding.UTF8.GetBytes("Test RabbitMQ");
 
                     channel.BasicPublish(exchange: topicName,
                         routingKey: topicName,
@@ -437,7 +360,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 {
                     result = "JWKS is empty";
                 }
-                if (!jwks.Contains("keys"))
+                if (!jwks?.Contains("keys") == true)
                 {
                     result = "JWKS format has error";
                 }
