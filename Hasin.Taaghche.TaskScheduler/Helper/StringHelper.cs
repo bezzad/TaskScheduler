@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Hasin.Taaghche.TaskScheduler.Helper
 {
@@ -26,6 +27,11 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
         {
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
+        public static string[] SplitUp(this string text)
+        {
+            return text.Split(new[] {",", ";", " "}, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

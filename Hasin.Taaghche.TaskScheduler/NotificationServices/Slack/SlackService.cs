@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hasin.Taaghche.TaskScheduler.Helper;
 using SlackMessenger;
 
 namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Slack
@@ -21,11 +22,10 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Slack
             if (string.IsNullOrEmpty(receiver))
                 return SystemNotification.InvalidOperation;
 
-            foreach (var id in receiver.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var id in receiver.SplitUp())
             {
                 try
                 {
-                    Logger.Info($"Sending slack to #{id} channel ...");
                     var msg = new Message(text: $"{subject} \n\n {message}", channel: id, username: UserName, icon: Sender);
                     Client.Send(msg);
                     Logger.Info($"Slack message sent to #{id} channel successful.");

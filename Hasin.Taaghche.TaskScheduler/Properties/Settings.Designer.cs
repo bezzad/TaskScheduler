@@ -296,63 +296,76 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://pay.taaghche.ir/v1")]
         public string PaymentServerUrl {
             get {
                 return ((string)(this["PaymentServerUrl"]));
             }
-            set {
-                this["PaymentServerUrl"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://auth.taaghche.ir/")]
         public string AuthenticationServerUrl {
             get {
                 return ((string)(this["AuthenticationServerUrl"]));
             }
-            set {
-                this["AuthenticationServerUrl"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8001/v1/monitor")]
         public string MsMonitorUrl {
             get {
                 return ((string)(this["MsMonitorUrl"]));
             }
-            set {
-                this["MsMonitorUrl"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://api.taaghche.ir:8001/v2")]
         public string MsUrlV2 {
             get {
                 return ((string)(this["MsUrlV2"]));
             }
-            set {
-                this["MsUrlV2"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://api.taaghche.ir:8001/v1")]
         public string MsUrlV1 {
             get {
                 return ((string)(this["MsUrlV1"]));
             }
-            set {
-                this["MsUrlV1"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://hooks.slack.com/services/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")]
+        public string SlackWebhookUrl {
+            get {
+                return ((string)(this["SlackWebhookUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://a.slack-edge.com/9c217/img/loading_hash_animation.gif")]
+        public string SlackIconUrl {
+            get {
+                return ((string)(this["SlackIconUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=.; Persist Security Info=False; Integrated Security=true; Initial Catalog=" +
+            "Task;")]
+        public string LocalConnectionString {
+            get {
+                return ((string)(this["LocalConnectionString"]));
             }
         }
     }

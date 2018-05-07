@@ -23,8 +23,10 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Email
         public override SystemNotification Send(string receiver, string message, string subject)
         {
             var completed = true;
-            if (string.IsNullOrEmpty(receiver)) return SystemNotification.InvalidOperation;
-            foreach (var email in receiver.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries))
+            if (string.IsNullOrEmpty(receiver))
+                return SystemNotification.InvalidOperation;
+
+            foreach (var email in receiver.SplitUp())
             {
                 try
                 {
@@ -85,7 +87,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Email
                 ?.Replace("{receiver}", receiver.Replace(".", "_"))
                 .Replace("{version}", Assembly.GetEntryAssembly().GetName().Version.ToString(3))
                 .Replace("{title}", Assembly.GetEntryAssembly().GetName().Name.ToLowerCaseNamingConvention())
-                .Replace("{message}", message?.Replace("\n", "<br/>").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;"))
+                .Replace("{message}", message?.Replace("\n", "<br/>").Replace("\t", "&nbsp;&nbsp;&nbsp;"))
                 .Replace("{subject}", subject.ToLowerCaseNamingConvention())
                 .Replace("{emailDateTime}", DateTime.Now.ToString("F", CultureInfo.CreateSpecificCulture("en")));
 

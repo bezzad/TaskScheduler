@@ -12,22 +12,20 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
         {
             var completed = true;
             if (string.IsNullOrEmpty(receiver)) return SystemNotification.InvalidOperation;
-            RahyabSmsService service = new RahyabSmsService(UserName, Password, Sender);
-            foreach (var phone in receiver.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries))
+            var service = new RahyabSmsService(UserName, Password, Sender);
+            foreach (var phone in receiver.Split(new[] { ",", ";", " " }, StringSplitOptions.RemoveEmptyEntries))
             {
                 var cellphone = CellphoneNumber.Normalize(phone);
 
                 try
                 {
                     if (cellphone == null) throw new Exception($"Invalid Phone: {phone}");
-
-                    service.SendSms(cellphone.PhoneNumber, message);
+                    service.SendSms(cellphone.PhoneNumber, subject + "\n\n" + message);
                     Logger.Info($"SMS Sent successfully to: {cellphone.PhoneNumber}");
-                    
                 }
                 catch (Exception ex)
                 {
-                    Logger.Fatal(ex, $"Send sms failed for sending message to {phone}");
+                    Logger.Fatal(ex, $"Send SMS failed for sending message to {phone}");
                     completed = false;
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hasin.Taaghche.TaskScheduler.Helper;
 using Telegram.Bot;
 
 namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Telegram
@@ -30,22 +31,22 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Telegram
             var completed = true;
             if (string.IsNullOrEmpty(receiver))
                 return SystemNotification.InvalidOperation;
-
-            var ids = receiver.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var id in ids)
+            
+            foreach (var id in receiver.SplitUp())
             {
-                try
+                Task.Run(async () =>
                 {
-                    Logger.Info($"Sending telegram to id: {id} ...");
-                    Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}").RunSynchronously();
-                    Logger.Info($"Telegram message sent to {id} id successful.");
-                }
-                catch (Exception ex)
-                {
-                    Logger.Fatal(ex, $"Send telegram failed for telegram id: {id}");
-                    completed = false;
-                }
+                    try
+                    {
+                        await Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}");
+                        Logger.Info($"Telegram message sent to {id} id successful.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Fatal(ex, $"Send telegram failed for telegram id: {id}");
+                        completed = false;
+                    }
+                });
             }
 
             return completed

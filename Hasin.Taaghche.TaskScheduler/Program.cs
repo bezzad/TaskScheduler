@@ -11,6 +11,7 @@ namespace Hasin.Taaghche.TaskScheduler
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
+        // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.AboveNormal;
