@@ -49,13 +49,13 @@ namespace Hasin.Taaghche.TaskScheduler.Model
                 case NotifyCondition.NotEquals:
                     return !actionResult.Equals(NotifyConditionResult, StringComparison.OrdinalIgnoreCase);
                 case NotifyCondition.MoreThan:
-                    return string.Compare(actionResult, NotifyConditionResult, StringComparison.OrdinalIgnoreCase) > 0;
+                    return Compare(actionResult, NotifyConditionResult, StringComparison.OrdinalIgnoreCase) > 0;
                 case NotifyCondition.EqualsOrMoreThan:
-                    return string.Compare(actionResult, NotifyConditionResult, StringComparison.OrdinalIgnoreCase) >= 0;
+                    return Compare(actionResult, NotifyConditionResult, StringComparison.OrdinalIgnoreCase) >= 0;
                 case NotifyCondition.LessThan:
-                    return string.Compare(actionResult, NotifyConditionResult, StringComparison.OrdinalIgnoreCase) < 0;
+                    return Compare(actionResult, NotifyConditionResult, StringComparison.OrdinalIgnoreCase) < 0;
                 case NotifyCondition.EqualsOrLessThan:
-                    return string.Compare(actionResult, NotifyConditionResult, StringComparison.OrdinalIgnoreCase) <= 0;
+                    return Compare(actionResult, NotifyConditionResult, StringComparison.OrdinalIgnoreCase) <= 0;
                 default:
                     return false;
             }
@@ -75,9 +75,9 @@ namespace Hasin.Taaghche.TaskScheduler.Model
         {
             if (Notifications == null || !Notifications.Any() || NotifyCondition == NotifyCondition.None) return;
 
-            var subject = Debugger.IsAttached ? $"DEBUG MODE\t-\t{Name}" : Name;
-            var body = $"\nResult: {result}\n\n" +
-                       $"Action: {ActionName}\n";
+            var subject = $"> {(Debugger.IsAttached ? "`DEBUG MODE`" : "")} *{Name}*";
+            var body = $"\n`Result`: _{result}_\n\n" +
+                       $"```Action: {ActionName}\n";
 
             if (ActionParameters?.Any() == true)
             {
@@ -88,9 +88,9 @@ namespace Hasin.Taaghche.TaskScheduler.Model
                         .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(x => $"{x}\n\t"));
                     val = val.Remove(val.LastIndexOf('\t'));
-                    body += $"  + {arg.Key}: {val}";
+                    body += $"  • {arg.Key}: {val}";
                 }
-                body = body.Replace("\"", "");
+                body = body.Replace("\"", "") + "```";
             }
 
             foreach (var notify in Notifications.Where(n => CompareByNotifyCondition(result)))

@@ -21,17 +21,22 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
         public static string EncodeToBase64(this string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            return Convert.ToBase64String(plainTextBytes);
         }
         public static string DecodeFromBase64(this string base64EncodedData)
         {
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
         public static string[] SplitUp(this string text)
         {
             return text.Split(new[] {",", ";", " "}, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public static string CleanText(this string text)
+        {
+            return text.Replace("`", "").Replace(">", "").Replace("_", "").Replace("*", " ");
         }
     }
 }

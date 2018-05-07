@@ -36,7 +36,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Email
                         completed = false;
                     }
 
-                    var mailMessage = GetMailMessage(email, message, subject);
+                    var mailMessage = GetMailMessage(email, message.CleanText(), subject.CleanText());
 
                     using (var smtpClient = GetSmtpClient())
                     {
