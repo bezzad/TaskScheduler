@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using Hasin.Taaghche.TaskScheduler.Helper;
 using Hasin.Taaghche.TaskScheduler.NotificationServices;
-using Hasin.Taaghche.TaskScheduler.NotificationServices.ShortMessageService;
 using Newtonsoft.Json.Linq;
 using NLog;
 using RestSharp;
@@ -90,14 +89,48 @@ namespace Hasin.Taaghche.TaskScheduler.Core
             }
         }
 
-        public static string KillProgress()
+        public static string KillProgress(string process)
         {
-            throw new NotImplementedException();
+            var result = "Process killing status:\n\r";
+
+            foreach (var proc in Process.GetProcessesByName(process))
+            {
+                try
+                {
+                    proc.Kill();
+                    result += $"{proc.Id}: {proc.ProcessName} killed at {DateTime.Now:s}";
+                }
+                catch (Exception exp)
+                {
+                    Nlogger.Fatal(exp);
+                    result += $"{proc.Id}: {proc.ProcessName} {exp.Message}";
+                }
+                finally
+                {
+                    result += Environment.NewLine;
+                }
+            }
+
+            return result;
         }
-        public static string SendEmail()
+
+        public static string SendEmail(string receiver, string message, string subject)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Nlogger.Info($"Sending email to [{receiver}] ...");
+                var emailService = NotificationType.Email.Factory();
+                var result = emailService.Send(receiver, message, subject);
+                Nlogger.Info($"Send email successfully completed to {receiver} by result message: {result.Message}");
+                return result.Message;
+            }
+            catch (Exception exp)
+            {
+                Nlogger.Fatal(exp);
+                return exp.Message;
+            }
         }
+
         public static string SendSms(string receiver, string message, string subject = null)
         {
             try
@@ -175,7 +208,7 @@ namespace Hasin.Taaghche.TaskScheduler.Core
                 var targetMethod =
                     methods.FirstOrDefault(m => string.Equals(m.Name, methodName, StringComparison.OrdinalIgnoreCase));
 
-                if (targetMethod == null) throw new MissingMethodException("ActionRunner", methodName);
+                if (targetMethod == null) throw new MissingMethodException(nameof(ActionRunner), methodName);
 
                 // sort args according by method parameters orders
                 var targetMethodParameters = targetMethod.GetParameters();

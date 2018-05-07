@@ -196,16 +196,20 @@
   ],
   "notifications": [
     {
-      "notifyType": "Email",
+      "notifyType": "email",
       "receiver": "abolfazl.ansari@gmail.com, behzad.khosravifar@gmail.com, m.dehghani612@gmail.com, abouzarnouri@gmail.com" //
     },
     {
-      "notifyType": "Sms",
-      "receiver": ""
+      "notifyType": "SMS",
+      "receiver": "09149149202;09122461695"
     },
     {
       "notifyType": "Telegram",
       "receiver": "@taaghche_notification" // aa:81342321, 106752126, @taaghche_notification
+    },
+    {
+      "notifyType": "Slack",
+      "receiver": "alerts"
     }
   ]
 }

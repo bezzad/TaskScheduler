@@ -63,17 +63,26 @@
     <Setting Name="PaymentServerUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://pay.taaghche.ir/v1</Value>
     </Setting>
-    <Setting Name="MsUrlV2" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://localhost:8001/v2</Value>
-    </Setting>
     <Setting Name="AuthenticationServerUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://auth.taaghche.ir/</Value>
     </Setting>
     <Setting Name="MsMonitorUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://localhost:8001/v1/monitor</Value>
     </Setting>
+    <Setting Name="MsUrlV2" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://api.taaghche.ir:8001/v2</Value>
+    </Setting>
     <Setting Name="MsUrlV1" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://localhost:8001/v1</Value>
+      <Value Profile="(Default)">http://api.taaghche.ir:8001/v1</Value>
+    </Setting>
+    <Setting Name="SlackWebhookUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://hooks.slack.com/services/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</Value>
+    </Setting>
+    <Setting Name="SlackIconUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://a.slack-edge.com/9c217/img/loading_hash_animation.gif</Value>
+    </Setting>
+    <Setting Name="LocalConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=.; Persist Security Info=False; Integrated Security=true; Initial Catalog=Task;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

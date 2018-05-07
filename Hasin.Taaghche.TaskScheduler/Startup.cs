@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Web.Http;
 using AdoManager;
@@ -21,7 +22,11 @@ namespace Hasin.Taaghche.TaskScheduler
     {
         public void Configuration(IAppBuilder app)
         {
-            #region Config NLog middleware
+            var connString = Properties.Settings.Default.ServerConnectionString;
+            if(Debugger.IsAttached)
+                connString = Properties.Settings.Default.LocalConnectionString;
+
+            #region Configure NLog middleware
 
             app.UseNLog();
             LogProvider.SetCurrentLogProvider(new ColouredConsoleLogProvider());
@@ -37,18 +42,18 @@ namespace Hasin.Taaghche.TaskScheduler
 
             #endregion
 
-            #region Config Hangfire Background Worker
+            #region Configure Hangfire Background Worker
 
-            // Configure AppDomain parameter to simplify the config – http://stackoverflow.com/a/3501950/1317575
+            // Configure AppDomain parameter to simplify the Configure – http://stackoverflow.com/a/3501950/1317575
             AppDomain.CurrentDomain.SetData("DataDirectory",
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data"));
 
             var script = FileManager.ReadResourceFile(Properties.Settings.Default.HangfireDbScript);
-            var cm = new ConnectionManager(new Connection(Properties.Settings.Default.ServerConnectionString));
+            var cm = new ConnectionManager(new Connection(connString));
             cm.CreateDatabaseIfNotExist(script);
 
             GlobalConfiguration.Configuration.UseSqlServerStorage(
-                    Properties.Settings.Default.ServerConnectionString
+                    connString
                     , new SqlServerStorageOptions {QueuePollInterval = TimeSpan.FromSeconds(5)})
                 .UseFilter(new LogEverythingAttribute());
 

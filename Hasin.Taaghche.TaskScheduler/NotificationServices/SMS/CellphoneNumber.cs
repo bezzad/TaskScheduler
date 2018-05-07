@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 
-namespace Hasin.Taaghche.TaskScheduler.NotificationServices.ShortMessageService
+namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
 {
     public class CellphoneNumber
     {
@@ -32,7 +32,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.ShortMessageService
                 phoneNumber = "0" + phoneNumber;
 
             if (phoneNumber.Length != 11)
-                throw new Exception("phone number len is not 11");
+                throw new Exception("phone number length is not 11");
 
             if (!phoneNumber.StartsWith("09"))
                 throw new Exception("phone number dos not start with 09");
@@ -82,7 +82,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.ShortMessageService
             }
             catch (Exception exp)
             {
-                Logger.Warn($"Invalid send sms request received. {exp.Message}");
+                Logger.Warn($"Invalid send SMS request received. {exp.Message}");
                 return null;
             }
             return cellphone;
