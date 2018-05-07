@@ -52,19 +52,17 @@ namespace Hasin.Taaghche.TaskScheduler
             var cm = new ConnectionManager(new Connection(connString));
             cm.CreateDatabaseIfNotExist(script);
 
-            GlobalConfiguration.Configuration.UseSqlServerStorage(
-                    connString
-                    , new SqlServerStorageOptions {QueuePollInterval = TimeSpan.FromSeconds(5)})
+            GlobalConfiguration.Configuration.UseSqlServerStorage(connString, 
+                    new SqlServerStorageOptions {QueuePollInterval = TimeSpan.FromSeconds(30)})
                 .UseFilter(new LogEverythingAttribute());
 
-
             // Read and start jobs
-            JobsManager.CheckupSetting(Properties.Settings.Default.SettingFileName, 5);
+            JobsManager.CheckupSetting(Properties.Settings.Default.SettingFileName, 30);
 
             app.UseHangfireDashboard("/hangfire");
             app.UseHangfireServer(new BackgroundJobServerOptions()
             {
-                ServerCheckInterval = TimeSpan.FromSeconds(5),
+                ServerCheckInterval = TimeSpan.FromSeconds(30),
                 HeartbeatInterval = TimeSpan.FromSeconds(5)
                 /*ServerName = "Hasin_Hangfire"*/
             }, JobStorage.Current);

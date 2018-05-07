@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Hasin.Taaghche.TaskScheduler.Helper;
 
 namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
 {
@@ -20,7 +21,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
                 try
                 {
                     if (cellphone == null) throw new Exception($"Invalid Phone: {phone}");
-                    service.SendSms(cellphone.PhoneNumber, subject + "\n\n" + message);
+                    service.SendSms(cellphone.PhoneNumber, subject.CleanText() + "\n\n" + message.CleanText());
                     Logger.Info($"SMS Sent successfully to: {cellphone.PhoneNumber}");
                 }
                 catch (Exception ex)
