@@ -17,7 +17,7 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 * * * *" // every hour
+      "triggerOn": "0 * * * *"
     },
     {
       "jobType": "Recurring",
@@ -36,7 +36,7 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 * * * *" // every hour
+      "triggerOn": "0 * * * *"
     },
     {
       "jobType": "Recurring",
@@ -55,7 +55,7 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 * * * *" // every hour
+      "triggerOn": "0 * * * *"
     },
     {
       "jobType": "Recurring",
@@ -68,13 +68,13 @@
         "httpMethod": "GET",
         "queryParameters": {
           "duration": 1440,
-          "maxTotal": 1000,
+          "maxTotal": 1500,
           "maxPerUser": 30
         }
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 9 * * *" // every day
+      "triggerOn": "0 9 * * *"
     },
     {
       "jobType": "Recurring",
@@ -92,11 +92,11 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "*/30 * * * *" // every 30 minutes
+      "triggerOn": "*/30 * * * *"
     },
     {
       "jobType": "Recurring",
-      "enable": true,
+      "enable": false,
       "name": "Taaghche Site map creator",
       "description": "Site map refresher every days at 08:00 AM",
       "actionName": "CallRestApi",
@@ -106,7 +106,7 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: Done",
-      "triggerOn": "0 8 * * *" // At 08:00 AM daily
+      "triggerOn": "0 8 * * *"
     },
     {
       "jobType": "Recurring",
@@ -117,14 +117,13 @@
       "actionParameters": {
         "url": "http://localhost:8002/v1/monitor/sitemap",
         "queryParameters": {
-          "min": 1 // minimum days
-          //,"url" "sitemap xml path"
+          "min": 1
         },
         "httpMethod": "GET"
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 10 * * *" // At 10:00 AM daily
+      "triggerOn": "0 10 * * *"
     },
     {
       "jobType": "Recurring",
@@ -135,14 +134,14 @@
       "actionParameters": {
         "url": "http://localhost:8002/v1/monitor/account",
         "queryParameters": {
-          "duration": 60, // minimum minutes
-          "min": 0 // account counts
+          "duration": 60,
+          "min": 0
         },
         "httpMethod": "GET"
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 */2 * * *" // every 120 min
+      "triggerOn": "0 */2 * * *"
     },
     {
       "jobType": "Recurring",
@@ -158,7 +157,7 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "*/5 * * * *" // every 5 min
+      "triggerOn": "*/5 * * * *"
     },
     {
       "jobType": "Recurring",
@@ -174,13 +173,13 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "*/5 * * * *" // every 5 min
+      "triggerOn": "*/5 * * * *"
     }
   ],
   "notifications": [
     {
       "notifyType": "sms",
-      "receiver": "09149149202" //
+      "receiver": "09149149202; 09122461695; 09125805273; 09359464593"
     },
     {
       "notifyType": "Slack",
