@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading;
 using NLog;
 using Topshelf;
+using AssemblyInfo = Hasin.Taaghche.TaskScheduler.Helper.AssemblyInfo;
 
 namespace Hasin.Taaghche.TaskScheduler
 {
@@ -17,14 +18,14 @@ namespace Hasin.Taaghche.TaskScheduler
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.AboveNormal;
             Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
 
-            var exitCode = HostFactory.Run(configurator =>
+            var rc = HostFactory.Run(configurator =>
             {
-                var version = Assembly.GetEntryAssembly().GetName().Version.ToString(3);
                 configurator.UseNLog(Logger.Factory);
                 configurator.RunAsLocalSystem();
-                configurator.SetDisplayName($"Task Scheduler v{version}");
-                configurator.SetDescription("Manage and execute actions by Hangfire job runners.");
-                configurator.SetServiceName("TaaghcheTaskScheduler");
+                configurator.SetDisplayName(
+                    $"{AssemblyInfo.Company} {AssemblyInfo.Title} v{AssemblyInfo.Version.ToString(3)}");
+                configurator.SetDescription(AssemblyInfo.Description);
+                configurator.SetServiceName(AssemblyInfo.Product);
                 configurator.SetStartTimeout(TimeSpan.FromMinutes(5));
                 configurator.OnException(exception =>
                 {
@@ -33,7 +34,7 @@ namespace Hasin.Taaghche.TaskScheduler
                 });
                 configurator.Service<Service>(serviceConfigurator =>
                 {
-                    serviceConfigurator.ConstructUsing(settings => new Service(settings, 8002));
+                    serviceConfigurator.ConstructUsing(settings => new Service(settings, Properties.Settings.Default.Port));
                     serviceConfigurator.WhenStarted(service => service.Start());
                     serviceConfigurator.WhenStopped(service => service.Stop());
                 });
@@ -49,11 +50,16 @@ namespace Hasin.Taaghche.TaskScheduler
                     //number of days until the error count resets
                     //r.SetResetPeriod(1); // set the reset interval to one day
                 });
+
+                configurator.StartAutomatically(); // only executed if the service is being installed.
             });
-            if (exitCode == TopshelfExitCode.Ok)
+            if (rc == TopshelfExitCode.Ok)
                 Logger.Info("Exiting with success code");
             else
-                Logger.Error($"Exiting with failure code: {exitCode}");
+                Logger.Error($"Exiting with failure code: {rc}");
+
+            var exitCode = Convert.ChangeType(rc, rc.GetTypeCode()) as int?;
+            Environment.ExitCode = exitCode ?? 1;
 
             Console.ReadKey();
         }

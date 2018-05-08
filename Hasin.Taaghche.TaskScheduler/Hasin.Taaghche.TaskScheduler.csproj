@@ -183,6 +183,7 @@
     <Compile Include="Core\ActionRunner.cs" />
     <Compile Include="Core\JobsManager.cs" />
     <Compile Include="Core\LogFailureAttribute.cs" />
+    <Compile Include="Helper\AssemblyInfo.cs" />
     <Compile Include="Helper\DatabaseHelper.cs" />
     <Compile Include="Helper\FileManager.cs" />
     <Compile Include="Helper\NotificationHelper.cs" />

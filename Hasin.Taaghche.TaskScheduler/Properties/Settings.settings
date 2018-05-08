@@ -1,7 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
-              GeneratedClassNamespace="Hasin.Taaghche.TaskScheduler.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Hasin.Taaghche.TaskScheduler.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="SettingFileName" Type="System.String" Scope="Application">
@@ -77,22 +75,21 @@
       <Value Profile="(Default)">:robot_face:</Value>
     </Setting>
     <Setting Name="LocalConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">
-        &lt;?xml version="1.0" encoding="utf-16"?&gt;
-        &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-        &lt;ConnectionString&gt;Server=.; Persist Security Info=False; Integrated Security=true; Initial Catalog=Task;&lt;/ConnectionString&gt;
-        &lt;/SerializableConnectionString&gt;
-      </DesignTimeValue>
-      <Value Profile="(Default)">Server=.; Persist Security Info=False; Integrated Security=true; Initial Catalog=Task;</Value>
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Server=.;Persist Security Info=False;Integrated Security=true;Initial Catalog=Task;&lt;/ConnectionString&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Server=.;Persist Security Info=False;Integrated Security=true;Initial Catalog=Task;</Value>
     </Setting>
     <Setting Name="ServerConnectionString" Type="(Connection string)" Scope="Application">
-      <DesignTimeValue Profile="(Default)">
-        &lt;?xml version="1.0" encoding="utf-16"?&gt;
-        &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-        &lt;ConnectionString&gt;Data Source=.; Initial Catalog=task; Persist Security Info=True; User ID=task; Password=CB3Wctg4RvdkL3jB;&lt;/ConnectionString&gt;
-        &lt;/SerializableConnectionString&gt;
-      </DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.; Initial Catalog=task; Persist Security Info=True; User ID=task; Password=CB3Wctg4RvdkL3jB;</Value>
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=.;Initial Catalog=task;Persist Security Info=True;User ID=task;Password=CB3Wctg4RvdkL3jB;&lt;/ConnectionString&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=.;Initial Catalog=task;Persist Security Info=True;User ID=task;Password=CB3Wctg4RvdkL3jB;</Value>
+    </Setting>
+    <Setting Name="Port" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">8002</Value>
     </Setting>
   </Settings>
 </SettingsFile>
