@@ -38,16 +38,11 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         [Route("account")]
         public string Account(int duration, int min)
         {
-            var result = "";
-
-            if (DateTime.Now.Hour < 8)
-                return result;
+            if (DateTime.Now.Hour < 8) return string.Empty;
             try
             {
                 var response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV2)
-                    .ExecuteWithAuthorization(new RestRequest(
-                            "user/query/count",
-                            Method.POST)
+                    .ExecuteWithAuthorization(new RestRequest("user/query/count", Method.POST)
                         .AddJsonBody(new MsAccountFilters
                         {
                             MinRegisterDate = DateTime.Now.AddMinutes(-duration),
@@ -55,21 +50,22 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                             IsEnabled = true
                         })
                     );
+
                 var count = response.ReadData<int>();
 
                 if (count <= min)
                 {
-                    result =
+                    return
                         $"Account registeration count between {DateTime.Now.AddMinutes(-duration)} " +
                         $"and {DateTime.Now} is {count} which is lower than {min}";
                 }
             }
             catch (Exception ex)
             {
-                result = $"Monitoring account register count failed : {ex.Message}";
+                return $"Monitoring account register count failed : {ex.Message}";
             }
 
-            return result;
+            return string.Empty;
         }
 
         /// <summary>
@@ -86,7 +82,6 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         [Route("download")]
         public string Download(int duration, float value)
         {
-            var result = "";
             try
             {
                 var response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV1)
@@ -97,9 +92,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 var count = response.ReadData<RangeData<MsDashboardReport>>().Data.FullDownloads;
 
                 response = new TaaghcheRestClient(Properties.Settings.Default.MsUrlV1)
-                    .ExecuteWithAuthorization(new RestRequest(
-                            "reports/dashboard",
-                            Method.GET)
+                    .ExecuteWithAuthorization(new RestRequest("reports/dashboard", Method.GET)
                         .AddParameter("startDate", DateTime.Now.AddMinutes(-duration * 2))
                         .AddParameter("endDate", DateTime.Now.AddMinutes(-duration))
                     );
@@ -107,15 +100,15 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
                 if (count < countPrev / value)
                 {
-                    result = $"Count: {count} - Previous Count: {countPrev} - Duration: {duration} - value: {value}";
+                    return $"Count: {count} - Previous Count: {countPrev} - Duration: {duration} - value: {value}";
                 }
             }
             catch (Exception ex)
             {
-                result = $"Monitoring download count failed : {ex.Message}";
+                return $"Monitoring download count failed : {ex.Message}";
             }
 
-            return result;
+            return string.Empty;
         }
 
         /// <summary>
@@ -133,9 +126,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         [Route("payment")]
         public string Payment(int duration, int min, string method)
         {
-            var result = "";
-            if (DateTime.Now.Hour < 8)
-                return result;
+            if (DateTime.Now.Hour < 8) return string.Empty;
 
             try
             {
@@ -159,26 +150,21 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 }
 
                 var response = new TaaghcheRestClient(Properties.Settings.Default.PaymentServerUrl)
-                    .ExecuteWithAuthorization(new RestRequest(
-                            "invoices/query/purchase/count",
-                            Method.POST)
-                        .AddJsonBody(filters)
-                    );
+                    .ExecuteWithAuthorization(new RestRequest("invoices/query/purchase/count", Method.POST).AddJsonBody(filters));
                 var count = response.ReadData<int>();
 
 
                 if (count <= min)
                 {
-                    result =
-                        $"Count: {count}  {DateTime.Now.AddMinutes(-duration)} - {DateTime.Now}";
+                    return $"Count: {count}  {DateTime.Now.AddMinutes(-duration)} - {DateTime.Now}";
                 }
             }
             catch (Exception ex)
             {
-                result = $"Monitoring payment count failed : {ex.Message}, {ex.InnerException?.Message}";
+                return $"Monitoring payment count failed : {ex.Message}, {ex.InnerException?.Message}";
             }
 
-            return result;
+            return string.Empty;
         }
 
         /// <summary>
@@ -220,31 +206,31 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
 
                 if (totalBuyCount >= maxTotal)
                 {
-                    result = "Total payment count is more than normal limit in specified duration. <br/> ";
-                    result += $"TotalBuyCount: {totalBuyCount} is more than {maxTotal} from {fromDate} to {toDate} <br/> ";
+                    result = "Total payment count is more than normal limit in specified duration. \n";
+                    result += $"TotalBuyCount: {totalBuyCount} is more than {maxTotal} from {fromDate} to {toDate} \n ";
                 }
 
                 if (perUserCount >= maxPerUser)
                 {
-                    result = "Some users have a payment count more than normal limit in specified duration. <br/> ";
-                    result += $"PerUserBuyCount: {perUserCount} is more than {maxPerUser} from {fromDate} to {toDate} <br/> ";
+                    result = "Some users have a payment count more than normal limit in specified duration. \n ";
+                    result += $"PerUserBuyCount: {perUserCount} is more than {maxPerUser} from {fromDate} to {toDate} \n ";
                     foreach (var item in groupedReport.GroupedItems)
                     {
                         if (item.BuyCount >= maxPerUser)
                         {
-                            result += $"user id: {item.Id} - buy count: {item.BuyCount} <br/> ";
+                            result += $"user id: {item.Id} - buy count: {item.BuyCount} \n ";
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                result = $"Monitoring payment count failed : {ex.Message}, {ex.InnerException?.Message}";
+                return $"Monitoring payment count failed : {ex.Message}, {ex.InnerException?.Message}";
             }
 
             return result;
         }
-        
+
         /// <summary>
         /// Monitor Site map fields last update.
         /// </summary>
@@ -295,7 +281,7 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                     }
                 }
 
-                return "OK";
+                return string.Empty;
             }
             catch (Exception ex)
             {
@@ -312,7 +298,6 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         [Route("rabbitmq")]
         public string Rabbitmq(string topicName = "rmqtest")
         {
-            var result = "";
             try
             {
                 var factory = new ConnectionFactory() { HostName = "localhost" };
@@ -334,9 +319,9 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
             }
             catch (Exception ex)
             {
-                result = $"Monitoring RabbitMQ failed : {ex.Message}, {ex.InnerException?.Message}";
+                return $"Monitoring RabbitMQ failed : {ex.Message}, {ex.InnerException?.Message}";
             }
-            return result;
+            return string.Empty;
         }
 
         /// <summary>
@@ -347,7 +332,6 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
         [Route("auth")]
         public string Auth()
         {
-            var result = "";
             try
             {
                 var url = Properties.Settings.Default.AuthenticationServerUrl + ".well-known/jwks";
@@ -357,19 +341,17 @@ namespace Hasin.Taaghche.TaskScheduler.Controller.v1
                 var jwks = response?.Content;
 
                 if (string.IsNullOrEmpty(jwks))
-                {
-                    result = "JWKS is empty";
-                }
-                if (!jwks?.Contains("keys") == true)
-                {
-                    result = "JWKS format has error";
-                }
+                    return "JWKS is empty";
+
+                if (!jwks.Contains("keys"))
+                    return "JWKS format has error";
             }
             catch (Exception ex)
             {
-                result = $"Monitoring jwks failed : {ex.Message}";
+                return $"Monitoring jwks failed : {ex.Message}";
             }
-            return result;
+
+            return string.Empty;
         }
     }
 }

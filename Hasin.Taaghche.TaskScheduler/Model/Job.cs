@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
 using System.ServiceModel;
 using Hasin.Taaghche.TaskScheduler.Core;
-using Hasin.Taaghche.TaskScheduler.Helper;
 using Hasin.Taaghche.TaskScheduler.Model.Enum;
 using Hasin.Taaghche.TaskScheduler.NotificationServices;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using NLog;
 using static System.String;
 
@@ -66,8 +62,7 @@ namespace Hasin.Taaghche.TaskScheduler.Model
             MapToThis(job);
             if (!Enable) return;
 
-            var result = ActionRunner.Run(ActionName, ActionParameters);
-
+            var result = job.Run();
             OnTriggerNotification(result);
         }
 
@@ -76,7 +71,7 @@ namespace Hasin.Taaghche.TaskScheduler.Model
             if (Notifications == null || !Notifications.Any() || NotifyCondition == NotifyCondition.None) return;
 
             var subject = $"> {(Debugger.IsAttached ? "`DEBUG MODE`" : "")} *{Name}*";
-            var body = $"\n`Result`: _{result}_\n\n" +
+            var body = $"\n`Result`: ```{result}``` \n\n" +
                        $"```Action: {ActionName}\n";
 
             if (ActionParameters?.Any() == true)

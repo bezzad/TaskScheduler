@@ -341,7 +341,7 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://a.slack-edge.com/9c217/img/loading_hash_animation.gif")]
+        [global::System.Configuration.DefaultSettingValueAttribute(":robot_face:")]
         public string SlackIconUrl {
             get {
                 return ((string)(this["SlackIconUrl"]));

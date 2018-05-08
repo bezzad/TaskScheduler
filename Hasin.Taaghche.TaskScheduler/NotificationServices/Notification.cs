@@ -67,8 +67,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
         {
             return !(notifyA == notifyB);
         }
-
-
+        
         public object Clone()
         {
             return new Notification()

@@ -72,7 +72,7 @@
       <Value Profile="(Default)">https://hooks.slack.com/services/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</Value>
     </Setting>
     <Setting Name="SlackIconUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://a.slack-edge.com/9c217/img/loading_hash_animation.gif</Value>
+      <Value Profile="(Default)">:robot_face:</Value>
     </Setting>
     <Setting Name="LocalConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;

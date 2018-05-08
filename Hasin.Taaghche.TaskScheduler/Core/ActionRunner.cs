@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Hasin.Taaghche.TaskScheduler.Helper;
+using Hasin.Taaghche.TaskScheduler.Model;
 using Hasin.Taaghche.TaskScheduler.NotificationServices;
 using Newtonsoft.Json.Linq;
 using NLog;
@@ -198,27 +199,27 @@ namespace Hasin.Taaghche.TaskScheduler.Core
 
         #region Core Methods
 
-        public static string Run(string methodName, IDictionary<string, object> args)
+        public static string Run(this IJob job)
         {
-            Nlogger.Info($"Run `{methodName}` action ...");
+            Nlogger.Info($"Runing `{job.ActionName}({job.Name})` action ...");
 
             try
             {
                 var methods = typeof(ActionRunner).GetMethods(BindingFlags.Static | BindingFlags.Public);
                 var targetMethod =
-                    methods.FirstOrDefault(m => string.Equals(m.Name, methodName, StringComparison.OrdinalIgnoreCase));
+                    methods.FirstOrDefault(m => string.Equals(m.Name, job.ActionName, StringComparison.OrdinalIgnoreCase));
 
-                if (targetMethod == null) throw new MissingMethodException(nameof(ActionRunner), methodName);
+                if (targetMethod == null) throw new MissingMethodException(nameof(ActionRunner), job.ActionName);
 
                 // sort args according by method parameters orders
                 var targetMethodParameters = targetMethod.GetParameters();
                 var orderedArgs = new object[targetMethodParameters.Length];
                 for (var i = 0; i < targetMethodParameters.Length; i++)
                 {
-                    if (args.ContainsKey(targetMethodParameters[i].Name))
+                    if (job.ActionParameters.ContainsKey(targetMethodParameters[i].Name))
                     {
                         // The parameter provided by given args
-                        var obj = args[targetMethodParameters[i].Name];
+                        var obj = job.ActionParameters[targetMethodParameters[i].Name];
                         if (obj?.GetType() == typeof(JObject))
                         {
                             orderedArgs[i] = ((JObject)obj).ToObject(targetMethodParameters[i].ParameterType);
@@ -237,8 +238,8 @@ namespace Hasin.Taaghche.TaskScheduler.Core
 
                 var result = targetMethod.Invoke(null, orderedArgs);
 
-                Nlogger.Info($"Result of [{methodName}]:   {result}");
-                Nlogger.Info($"The `{methodName}` action completed.\n");
+                Nlogger.Info($"Result of {job.ActionName}({job.Name}):   {result}");
+                Nlogger.Info($"The `{job.ActionName}({job.Name})` action completed\n");
 
                 return result?.ToString();
             }
