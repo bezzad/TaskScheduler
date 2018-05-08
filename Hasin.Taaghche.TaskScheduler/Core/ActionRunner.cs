@@ -37,18 +37,14 @@ namespace Hasin.Taaghche.TaskScheduler.Core
                 var client = new RestClient(url);
 
                 if (string.IsNullOrEmpty(httpMethod)) httpMethod = "GET";
-                var method = (Method)Enum.Parse(typeof(Method), httpMethod.ToUpper());
+                var method = (Method) Enum.Parse(typeof(Method), httpMethod.ToUpper());
                 var request = new RestRequest(method);
 
                 var resourceUrl = "";
 
                 if (headers?.Any() == true)
-                {
                     foreach (var head in headers)
-                    {
                         request.AddHeader(head.Key, head.Value); // adds URL headers
-                    }
-                }
 
                 if (queryParameters?.Any() == true)
                 {
@@ -56,7 +52,8 @@ namespace Hasin.Taaghche.TaskScheduler.Core
 
                     foreach (var query in queryParameters)
                     {
-                        request.AddQueryParameter(query.Key, query.Value); // adds URL querystring like: baseUrl/?name=value&name2=value2
+                        request.AddQueryParameter(query.Key,
+                            query.Value); // adds URL querystring like: baseUrl/?name=value&name2=value2
                         resourceUrl += $"{query.Key}={query.Value}&";
                     }
 
@@ -64,12 +61,9 @@ namespace Hasin.Taaghche.TaskScheduler.Core
                 }
 
                 if (parameters?.Any() == true)
-                {
                     foreach (var parameter in parameters)
-                    {
-                        request.AddParameter(parameter.Key, parameter.Value, ParameterType.RequestBody); // adds URL parameters based on Method
-                    }
-                }
+                        request.AddParameter(parameter.Key, parameter.Value,
+                            ParameterType.RequestBody); // adds URL parameters based on Method
 
                 // add HTTP Headers
                 if (body != null)
@@ -95,7 +89,6 @@ namespace Hasin.Taaghche.TaskScheduler.Core
             var result = "Process killing status:\n\r";
 
             foreach (var proc in Process.GetProcessesByName(process))
-            {
                 try
                 {
                     proc.Kill();
@@ -110,7 +103,6 @@ namespace Hasin.Taaghche.TaskScheduler.Core
                 {
                     result += Environment.NewLine;
                 }
-            }
 
             return result;
         }
@@ -158,23 +150,28 @@ namespace Hasin.Taaghche.TaskScheduler.Core
         {
             try
             {
-                if (string.IsNullOrEmpty(fileName)) throw new FileNotFoundException("The file path is empty!", fileName);
+                if (string.IsNullOrEmpty(fileName))
+                    throw new FileNotFoundException("The file path is empty!", fileName);
 
                 fileName = fileName.Replace(@"\\", @"\");
                 arguments = arguments?.Replace(@"\\", @"\");
 
                 var style = string.IsNullOrEmpty(windowsStyle)
                     ? ProcessWindowStyle.Normal
-                    : (ProcessWindowStyle)Enum.Parse(typeof(ProcessWindowStyle), windowsStyle, true);
+                    : (ProcessWindowStyle) Enum.Parse(typeof(ProcessWindowStyle), windowsStyle, true);
 
                 // Prepare the process to run
                 var start = new ProcessStartInfo
                 {
                     // Enter in the command line arguments, everything you would enter after the executable name itself
-                    Arguments = Environment.ExpandEnvironmentVariables(arguments ?? ""),  // Replace specifial folders name by real paths
+                    Arguments =
+                        Environment.ExpandEnvironmentVariables(
+                            arguments ?? ""), // Replace specifial folders name by real paths
                     //
                     // Enter the executable to run, including the complete path
-                    FileName = Environment.ExpandEnvironmentVariables(fileName),  // Replace specifial folders name by real paths
+                    FileName =
+                        Environment.ExpandEnvironmentVariables(
+                            fileName), // Replace specifial folders name by real paths
                     //
                     // Do you want to show a console window?
                     WindowStyle = style,
@@ -207,7 +204,8 @@ namespace Hasin.Taaghche.TaskScheduler.Core
             {
                 var methods = typeof(ActionRunner).GetMethods(BindingFlags.Static | BindingFlags.Public);
                 var targetMethod =
-                    methods.FirstOrDefault(m => string.Equals(m.Name, job.ActionName, StringComparison.OrdinalIgnoreCase));
+                    methods.FirstOrDefault(m =>
+                        string.Equals(m.Name, job.ActionName, StringComparison.OrdinalIgnoreCase));
 
                 if (targetMethod == null) throw new MissingMethodException(nameof(ActionRunner), job.ActionName);
 
@@ -215,15 +213,12 @@ namespace Hasin.Taaghche.TaskScheduler.Core
                 var targetMethodParameters = targetMethod.GetParameters();
                 var orderedArgs = new object[targetMethodParameters.Length];
                 for (var i = 0; i < targetMethodParameters.Length; i++)
-                {
                     if (job.ActionParameters.ContainsKey(targetMethodParameters[i].Name))
                     {
                         // The parameter provided by given args
                         var obj = job.ActionParameters[targetMethodParameters[i].Name];
                         if (obj?.GetType() == typeof(JObject))
-                        {
-                            orderedArgs[i] = ((JObject)obj).ToObject(targetMethodParameters[i].ParameterType);
-                        }
+                            orderedArgs[i] = ((JObject) obj).ToObject(targetMethodParameters[i].ParameterType);
                         else orderedArgs[i] = obj;
                     }
                     else if (targetMethodParameters[i].HasDefaultValue) // for optional parameter
@@ -234,7 +229,6 @@ namespace Hasin.Taaghche.TaskScheduler.Core
                     {
                         orderedArgs[i] = targetMethodParameters[i].ParameterType.GetDefault();
                     }
-                }
 
                 var result = targetMethod.Invoke(null, orderedArgs);
 

@@ -7,14 +7,16 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
     public class SmsService : NotificationService
     {
         public SmsService(string userName, string password, string sendNumber)
-            : base(userName, password, sendNumber) { }
+            : base(userName, password, sendNumber)
+        {
+        }
 
         public override SystemNotification Send(string receiver, string message, string subject)
         {
             var completed = true;
             if (string.IsNullOrEmpty(receiver)) return SystemNotification.InvalidOperation;
             var service = new RahyabSmsService(UserName, Password, Sender);
-            foreach (var phone in receiver.Split(new[] { ",", ";", " " }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var phone in receiver.Split(new[] {",", ";", " "}, StringSplitOptions.RemoveEmptyEntries))
             {
                 var cellphone = CellphoneNumber.Normalize(phone);
 
@@ -30,6 +32,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
                     completed = false;
                 }
             }
+
             return completed ? SystemNotification.SuccessfullyDone : SystemNotification.InternalError;
         }
 

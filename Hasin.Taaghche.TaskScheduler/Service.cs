@@ -4,7 +4,6 @@ using System.Net;
 using System.Threading;
 using Microsoft.Owin.Hosting;
 using NLog;
-using Topshelf;
 using Topshelf.Runtime;
 
 namespace Hasin.Taaghche.TaskScheduler
@@ -62,7 +61,7 @@ namespace Hasin.Taaghche.TaskScheduler
                     _logger.Info($"Server running on port {_port}");
                     Process.Start($"http://localhost:{_port}/hangfire");
                 });
-               // _service.SetApartmentState(ApartmentState.STA); // cause to run slower
+                // _service.SetApartmentState(ApartmentState.STA); // cause to run slower
                 _service.Priority = ThreadPriority.AboveNormal;
                 _service.Start();
 
@@ -79,7 +78,7 @@ namespace Hasin.Taaghche.TaskScheduler
                 return false;
             }
         }
-        
+
 
         public bool Stop()
         {
@@ -91,11 +90,10 @@ namespace Hasin.Taaghche.TaskScheduler
             }
             catch (Exception e)
             {
-               _logger.Fatal(e);
+                _logger.Fatal(e);
             }
-            
+
             return true;
         }
-        
     }
 }

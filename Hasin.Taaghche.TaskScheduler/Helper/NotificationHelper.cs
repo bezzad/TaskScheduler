@@ -19,34 +19,34 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
             {
                 case NotificationType.Sms:
                     return new SmsService(
-                        userName: Settings.Default.RahyabUserName,
-                        password: Settings.Default.RahyabPassword,
-                        sendNumber: Settings.Default.RahyabSendNumber);
+                        Settings.Default.RahyabUserName,
+                        Settings.Default.RahyabPassword,
+                        Settings.Default.RahyabSendNumber);
 
                 case NotificationType.Email:
                     return new EmailService(
-                       userName: Settings.Default.SmtpUrl,
-                       password: Settings.Default.SmtpSenderPassword,
-                       senderEmail: Settings.Default.SmtpSenderMail);
+                        Settings.Default.SmtpUrl,
+                        Settings.Default.SmtpSenderPassword,
+                        Settings.Default.SmtpSenderMail);
 
                 case NotificationType.Telegram:
                     return new TelegramService(
-                        userName: Settings.Default.TelegramBotUsername,
-                        apiKey: Settings.Default.TelegramBotApiKey,
-                        senderBot: Settings.Default.TelegramBotUsername);
+                        Settings.Default.TelegramBotUsername,
+                        Settings.Default.TelegramBotApiKey,
+                        Settings.Default.TelegramBotUsername);
 
                 case NotificationType.Slack:
                     var asmInfo = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
                     return new SlackService(
-                        userName: asmInfo.ProductName + " v" + asmInfo.ProductVersion,
-                        webhookUrl: Settings.Default.SlackWebhookUrl,
-                        icon: Settings.Default.SlackIconUrl);
+                        asmInfo.ProductName + " v" + asmInfo.ProductVersion,
+                        Settings.Default.SlackWebhookUrl,
+                        Settings.Default.SlackIconUrl);
 
                 case NotificationType.CallRestApi:
                     return new CallRestApiService(
-                        clientId: Settings.Default.ApiClientId,
-                        clientSecret: Settings.Default.ApiClientSecret,
-                        authServerUrl: Settings.Default.ApiAuthServerUrl)
+                        Settings.Default.ApiClientId,
+                        Settings.Default.ApiClientSecret,
+                        Settings.Default.ApiAuthServerUrl)
                     {
                         AuthScope = Settings.Default.ApiAuthScope,
                         AuthGrantType = Settings.Default.ApiAuthGrantType

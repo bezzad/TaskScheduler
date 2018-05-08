@@ -27,7 +27,6 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Email
                 return SystemNotification.InvalidOperation;
 
             foreach (var email in receiver.SplitUp())
-            {
                 try
                 {
                     if (string.IsNullOrEmpty(email) || !ValidateEmailAddressSyntax(email))
@@ -49,7 +48,6 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Email
                     Logger.Fatal(ex, $"Send email failed for sending mail to {email}");
                     completed = false;
                 }
-            }
 
             return completed ? SystemNotification.SuccessfullyDone : SystemNotification.InternalError;
         }
@@ -69,11 +67,9 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.Email
                 UseDefaultCredentials = false
             };
             if (Sender != null)
-            {
                 smtpClient.Credentials =
                     new NetworkCredential(Sender,
                         Settings.Default.SmtpSenderPassword);
-            }
 
             return smtpClient;
         }

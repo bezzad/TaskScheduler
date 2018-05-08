@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Hasin.Taaghche.TaskScheduler.Core;
 using Hasin.Taaghche.TaskScheduler.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,11 +13,13 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApi
     [Guid("1bb06225-093f-0f47-ff10-e880d4d940bc")]
     public class CallRestApiService : NotificationService
     {
+        public CallRestApiService(string clientId, string clientSecret, string authServerUrl)
+            : base(clientId, clientSecret, authServerUrl)
+        {
+        }
+
         public string AuthGrantType { get; set; }
         public string AuthScope { get; set; }
-
-        public CallRestApiService(string clientId, string clientSecret, string authServerUrl)
-            : base(clientId, clientSecret, authServerUrl) { }
 
         public override SystemNotification Send(string receiver, string message, string subject)
         {
@@ -27,25 +30,25 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApi
                 {
                     var authToken = GetAuthToken();
                     var url = GetValidUrl(receiver);
-                    var result = Core.ActionRunner.CallRestApi(
-                                url: url,
-                                httpMethod: "POST",
-                                headers: new Dictionary<string, string>
-                                    {
-                                        { "cache-control", "no-cache" },
-                                        { "content-type", "application/x-www-form-urlencoded" },
-                                        { "taskScheduler-token", GetType().GUID.ToString() }
-                                    },
-                                queryParameters: new Dictionary<string, string>
-                                    {
-                                        { "message", message },
-                                        { "subject", subject }
-                                    },
-                                parameters: new Dictionary<string, string>
-                                    {
-                                        { "application/x-www-form-urlencoded", $"token={authToken}" }
-                                    },
-                                body: null);
+                    var result = ActionRunner.CallRestApi(
+                        url,
+                        "POST",
+                        new Dictionary<string, string>
+                        {
+                            {"cache-control", "no-cache"},
+                            {"content-type", "application/x-www-form-urlencoded"},
+                            {"taskScheduler-token", GetType().GUID.ToString()}
+                        },
+                        new Dictionary<string, string>
+                        {
+                            {"message", message},
+                            {"subject", subject}
+                        },
+                        new Dictionary<string, string>
+                        {
+                            {"application/x-www-form-urlencoded", $"token={authToken}"}
+                        },
+                        null);
 
                     Logger.Info($"Post rest api successfully to: {url}");
                     return SystemNotification.SuccessfullyDone;
@@ -53,21 +56,21 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApi
                 else // GET
                 {
                     var url = GetValidUrl(receiver);
-                    var result = Core.ActionRunner.CallRestApi(
-                                url: url,
-                                httpMethod: "GET",
-                                headers: new Dictionary<string, string>
-                                    {
-                                        { "cache-control", "no-cache" },
-                                        { "taskScheduler-token", GetType().GUID.ToString() }
-                                    },
-                                queryParameters: new Dictionary<string, string>
-                                    {
-                                        { "message", message },
-                                        { "subject", subject }
-                                    },
-                                parameters: null,
-                                body: null);
+                    var result = ActionRunner.CallRestApi(
+                        url,
+                        "GET",
+                        new Dictionary<string, string>
+                        {
+                            {"cache-control", "no-cache"},
+                            {"taskScheduler-token", GetType().GUID.ToString()}
+                        },
+                        new Dictionary<string, string>
+                        {
+                            {"message", message},
+                            {"subject", subject}
+                        },
+                        null,
+                        null);
 
                     Logger.Info($"Get rest api successfully to: {url}");
                     return SystemNotification.SuccessfullyDone;
@@ -92,30 +95,30 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApi
             {
                 var authHead = $"{UserName}:{Password}".EncodeToBase64();
 
-                var token = Core.ActionRunner.CallRestApi(
-                    url: Sender,
-                    httpMethod: "POST",
-                    headers: new Dictionary<string, string>
-                        {
-                            { "cache-control", "no-cache" },
-                            { "authorization", $"Basic {authHead}" },
-                            { "content-type", "application/x-www-form-urlencoded" },
-                            { "taskScheduler-token", GetType().GUID.ToString() }
-                        },
-                    queryParameters: null,
-                    parameters: new Dictionary<string, string>
-                        {
-                            { "application/x-www-form-urlencoded", $"grant_type={AuthGrantType}&scope={AuthScope}" }
-                        },
-                    body: null);
+                var token = ActionRunner.CallRestApi(
+                    Sender,
+                    "POST",
+                    new Dictionary<string, string>
+                    {
+                        {"cache-control", "no-cache"},
+                        {"authorization", $"Basic {authHead}"},
+                        {"content-type", "application/x-www-form-urlencoded"},
+                        {"taskScheduler-token", GetType().GUID.ToString()}
+                    },
+                    null,
+                    new Dictionary<string, string>
+                    {
+                        {"application/x-www-form-urlencoded", $"grant_type={AuthGrantType}&scope={AuthScope}"}
+                    },
+                    null);
 
                 var tokenKey = "access_token";
                 if (token?.Contains(tokenKey) != true) return token;
                 var iAccTok = token.IndexOf("{", StringComparison.OrdinalIgnoreCase);
                 token = token.Substring(iAccTok, token.Length - iAccTok);
                 token = token.Trim();
-                var tokenObj = (JObject)JsonConvert.DeserializeObject(token);
-                
+                var tokenObj = (JObject) JsonConvert.DeserializeObject(token);
+
                 return tokenObj[tokenKey].ToString(Formatting.None).Replace("\"", "");
             }
             catch (Exception ex)
@@ -124,6 +127,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.CallRestApi
                 return null;
             }
         }
+
         private string GetValidUrl(string url)
         {
             url = url?.ToLower();

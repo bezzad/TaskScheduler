@@ -19,6 +19,7 @@ namespace Hasin.Taaghche.TaskScheduler.Utilities
                     $"response failed for {address} ( status : {response.StatusCode} - content : {response.Content}";
                 throw new Exception(exception);
             }
+
             return response;
         }
 
@@ -35,19 +36,14 @@ namespace Hasin.Taaghche.TaskScheduler.Utilities
             IRestRequest request,
             int? timeout = null)
         {
-            if (timeout.HasValue)
-            {
-                client.Timeout = timeout.Value;
-            }
+            if (timeout.HasValue) client.Timeout = timeout.Value;
             return client.ExecuteWithAuthorizationAsync(request);
         }
 
         private static IRestRequest GenerateRequest(string address, Method method, object jsonBody = null)
         {
             if (method == Method.GET && jsonBody != null)
-            {
                 throw new ArgumentException("Get request don't have jsonBody");
-            }
 
             RestRequest request;
             switch (method)
@@ -62,11 +58,9 @@ namespace Hasin.Taaghche.TaskScheduler.Utilities
                     request = new RestRequest(address, method);
                     break;
             }
+
             request.JsonSerializer = new RestSharpJsonNetSerializer();
-            if (jsonBody != null)
-            {
-                request.AddJsonBody(jsonBody);
-            }
+            if (jsonBody != null) request.AddJsonBody(jsonBody);
             return request;
         }
 

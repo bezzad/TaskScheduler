@@ -54,13 +54,11 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
                 using (var stream = assembly.GetManifestResourceStream(resourceName))
                 {
                     if (stream != null)
-                    {
                         using (var reader = new StreamReader(stream))
                         {
                             result = reader.ReadToEnd();
                             return result;
                         }
-                    }
                 }
             }
             catch (Exception exp)
@@ -81,6 +79,5 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
             if (!Directory.Exists(pathDir))
                 Directory.CreateDirectory(pathDir);
         }
-
     }
 }

@@ -8,8 +8,7 @@ namespace Hasin.Taaghche.TaskScheduler.Model
 {
     public interface IJob
     {
-        [JsonIgnore]
-        string JobId { get; set; }
+        [JsonIgnore] string JobId { get; set; }
 
         [JsonProperty(PropertyName = "name", NullValueHandling = NullValueHandling.Ignore)]
         string Name { get; set; }
@@ -22,17 +21,20 @@ namespace Hasin.Taaghche.TaskScheduler.Model
 
         [JsonRequired]
         [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty(PropertyName = "jobType", NullValueHandling = NullValueHandling.Include, Required = Required.Always)]
+        [JsonProperty(PropertyName = "jobType", NullValueHandling = NullValueHandling.Include,
+            Required = Required.Always)]
         JobType JobType { get; set; }
 
         [JsonRequired]
-        [JsonProperty(PropertyName = "actionName", NullValueHandling = NullValueHandling.Include, Required = Required.Always)]
+        [JsonProperty(PropertyName = "actionName", NullValueHandling = NullValueHandling.Include,
+            Required = Required.Always)]
         string ActionName { get; set; }
 
         [JsonProperty(PropertyName = "actionParameters", NullValueHandling = NullValueHandling.Include)]
         IDictionary<string, object> ActionParameters { get; set; }
-        
-        [JsonProperty(PropertyName = "triggerOn", NullValueHandling = NullValueHandling.Include, Required = Required.AllowNull)]
+
+        [JsonProperty(PropertyName = "triggerOn", NullValueHandling = NullValueHandling.Include,
+            Required = Required.AllowNull)]
         string TriggerOn { get; set; } // Cron expression or TimeSpan
 
         [JsonProperty(PropertyName = "notifications", NullValueHandling = NullValueHandling.Ignore)]
@@ -46,15 +48,14 @@ namespace Hasin.Taaghche.TaskScheduler.Model
         string NotifyConditionResult { get; set; }
 
         /// <summary>
-        /// Add or update a job in hangfire to do lists.
+        ///     Add or update a job in hangfire to do lists.
         /// </summary>
         /// <returns>Get added job id</returns>
         string Register();
 
         /// <summary>
-        /// Run job action now.
+        ///     Run job action now.
         /// </summary>
         void Trigger(Job job);
-        
     }
 }

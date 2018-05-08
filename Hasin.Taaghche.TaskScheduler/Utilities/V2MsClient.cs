@@ -7,7 +7,7 @@ using RestSharp;
 
 namespace Hasin.Taaghche.TaskScheduler.Utilities
 {
-    class V2MsClient
+    internal class V2MsClient
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -21,7 +21,8 @@ namespace Hasin.Taaghche.TaskScheduler.Utilities
             Method method,
             object jsonBody = null)
         {
-            var response = await ClientRequestHelper.ExecRequestWithAuthAsync(GetNewClient(), address, method, jsonBody);
+            var response =
+                await ClientRequestHelper.ExecRequestWithAuthAsync(GetNewClient(), address, method, jsonBody);
             return response.Content;
         }
 
