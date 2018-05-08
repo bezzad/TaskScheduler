@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
 using System.ServiceModel;
 using Hasin.Taaghche.TaskScheduler.Core;
-using Hasin.Taaghche.TaskScheduler.Helper;
 using Hasin.Taaghche.TaskScheduler.Model.Enum;
 using Hasin.Taaghche.TaskScheduler.NotificationServices;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using NLog;
 using static System.String;
 
@@ -36,7 +32,8 @@ namespace Hasin.Taaghche.TaskScheduler.Model
 
         public virtual string Register()
         {
-            throw new ActionNotSupportedException("This class is abstract for register job! Use of child classes instead this.");
+            throw new ActionNotSupportedException(
+                "This class is abstract for register job! Use of child classes instead this.");
         }
 
 
@@ -66,8 +63,7 @@ namespace Hasin.Taaghche.TaskScheduler.Model
             MapToThis(job);
             if (!Enable) return;
 
-            var result = ActionRunner.Run(ActionName, ActionParameters);
-
+            var result = job.Run();
             OnTriggerNotification(result);
         }
 
@@ -76,7 +72,7 @@ namespace Hasin.Taaghche.TaskScheduler.Model
             if (Notifications == null || !Notifications.Any() || NotifyCondition == NotifyCondition.None) return;
 
             var subject = $"> {(Debugger.IsAttached ? "`DEBUG MODE`" : "")} *{Name}*";
-            var body = $"\n`Result`: _{result}_\n\n" +
+            var body = $"\n`Result`: ```{result}``` \n\n" +
                        $"```Action: {ActionName}\n";
 
             if (ActionParameters?.Any() == true)
@@ -85,27 +81,26 @@ namespace Hasin.Taaghche.TaskScheduler.Model
                 foreach (var arg in ActionParameters.Where((k, v) => !IsNullOrEmpty(v.ToString())))
                 {
                     var val = Concat(arg.Value.ToString()
-                        .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                        .Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                         .Select(x => $"{x}\n\t"));
                     val = val.Remove(val.LastIndexOf('\t'));
                     body += $"  • {arg.Key}: {val}";
                 }
+
                 body = body.Replace("\"", "") + "```";
             }
 
             foreach (var notify in Notifications.Where(n => CompareByNotifyCondition(result)))
-            {
                 try
                 {
 #if !TestWithoutNotify
-                    notify.Notifying(message: body, subject: subject);
+                    notify.Notifying(body, subject);
 #endif
                 }
                 catch (Exception exp)
                 {
                     Nlogger.Error(exp);
                 }
-            }
         }
 
         public void MapToThis(IJob job)
@@ -129,7 +124,9 @@ namespace Hasin.Taaghche.TaskScheduler.Model
 
         #region Constructors
 
-        public Job() { }
+        public Job()
+        {
+        }
 
         public Job(IJob job)
         {

@@ -5,7 +5,6 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class SystemNotification
     {
-
         public static readonly SystemNotification SuccessfullyDone = new SystemNotification
         {
             Status = Status.Successful,
@@ -42,12 +41,10 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
         };
 
 
-        [JsonProperty("additionalData")]
-        public string AdditionalData { get; set; }
-        [JsonProperty("message")]
-        public string Message { get; set; }
-        [JsonProperty("status")]
-        public Status Status { get; set; }
+        [JsonProperty("additionalData")] public string AdditionalData { get; set; }
 
+        [JsonProperty("message")] public string Message { get; set; }
+
+        [JsonProperty("status")] public Status Status { get; set; }
     }
 }

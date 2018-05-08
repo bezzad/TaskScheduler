@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -14,8 +9,9 @@ namespace Hasin.Taaghche.TaskScheduler.Utilities
         public static bool IsSuccessful(this IRestResponse response)
         {
             // if status code was 2xx
-            return (int)response.StatusCode / 100 == 2;
+            return (int) response.StatusCode / 100 == 2;
         }
+
         public static T ReadData<T>(this IRestResponse response)
         {
             if (!response.IsSuccessful())

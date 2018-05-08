@@ -11,7 +11,6 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
 
-
         public static bool IsExistDatabase(this ConnectionManager cm)
         {
             try
@@ -27,20 +26,20 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
                         Logger.Info($"The [{Path.GetFileNameWithoutExtension(dbName)}] database was not found!");
                         return false;
                     }
+
                     cm.Open();
                     cm.Close();
-                    Logger.Info($"Ok, Connected to [{Path.GetFileNameWithoutExtension(dbName)}] database successfully.");
+                    Logger.Info(
+                        $"Ok, Connected to [{Path.GetFileNameWithoutExtension(dbName)}] database successfully.");
                     return true;
                 }
-                else
-                {
-                    Logger.Info($"Checking the [{cm.Connection.DatabaseName}] database is exist ...");
-                    // try to connect to database if can to connect that then is shown database is exist!
-                    cm.Open();
-                    cm.Close();
-                    Logger.Info($"Ok, Connected to [{cm.Connection.DatabaseName}] database successfully.");
-                    return true;
-                }
+
+                Logger.Info($"Checking the [{cm.Connection.DatabaseName}] database is exist ...");
+                // try to connect to database if can to connect that then is shown database is exist!
+                cm.Open();
+                cm.Close();
+                Logger.Info($"Ok, Connected to [{cm.Connection.DatabaseName}] database successfully.");
+                return true;
             }
             catch (Exception exp)
             {
@@ -66,29 +65,27 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
                         Logger.Info($"The database [{cm.Connection.DatabaseName}] created successfully.");
                         return IsExistDatabase(cm);
                     }
-                    else // local database at AttachDbFilename
-                    {
-                        var dbFullPath = GetPathFromAttachDbFilename(cm.Connection.AttachDbFilename);
 
-                        FileManager.CheckupDirectory(dbFullPath);
+                    var dbFullPath = GetPathFromAttachDbFilename(cm.Connection.AttachDbFilename);
 
-                        var dbName = Path.GetFileNameWithoutExtension(dbFullPath);
-                        var dbLdfFullPath = Path.ChangeExtension(dbFullPath, ".ldf");
+                    FileManager.CheckupDirectory(dbFullPath);
 
-                        string sql = $@"CREATE DATABASE [{dbName}]
+                    var dbName = Path.GetFileNameWithoutExtension(dbFullPath);
+                    var dbLdfFullPath = Path.ChangeExtension(dbFullPath, ".ldf");
+
+                    var sql = $@"CREATE DATABASE [{dbName}]
                                      ON PRIMARY (NAME={dbName?.Replace(" ", "_")}_data, FILENAME = '{dbFullPath}')
                                      LOG ON (NAME={dbName?.Replace(" ", "_")}_log, FILENAME = '{dbLdfFullPath}')";
 
-                        masterConn.SqlConn.Execute(sql);
+                    masterConn.SqlConn.Execute(sql);
 
-                        if (!File.Exists(dbFullPath)) return false;
+                    if (!File.Exists(dbFullPath)) return false;
 
-                        // Detach database from Sql Server to used in this application only.
-                        masterConn.DetachDatabase(dbName);
+                    // Detach database from Sql Server to used in this application only.
+                    masterConn.DetachDatabase(dbName);
 
-                        Logger.Info($"The [{dbName}] database created successfully.");
-                        return true;
-                    }
+                    Logger.Info($"The [{dbName}] database created successfully.");
+                    return true;
                 }
             }
             catch (Exception exp)
@@ -123,7 +120,7 @@ namespace Hasin.Taaghche.TaskScheduler.Helper
         private static string GetPathFromAttachDbFilename(string attachDbFilename)
         {
             return attachDbFilename.Replace("|DataDirectory|",
-                            AppDomain.CurrentDomain.GetData("DataDirectory").ToString());
+                AppDomain.CurrentDomain.GetData("DataDirectory").ToString());
         }
 
         public static bool DetachDatabase(this ConnectionManager cm, string dbName)

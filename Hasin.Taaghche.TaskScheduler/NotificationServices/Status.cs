@@ -7,11 +7,11 @@
         InvalidSession = 2,
         InputError = 3,
         LoginNeeded = 4,
-        DuplicateEmail = 5, 
+        DuplicateEmail = 5,
         BadContract = 6,
         RedirectToPayment = 7,
         ForceUpdate = 8,
         ForceLogout = 9,
-        InvokeKeepUpdate = 10,
+        InvokeKeepUpdate = 10
     }
 }

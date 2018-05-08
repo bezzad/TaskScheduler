@@ -4,10 +4,10 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
 {
     public class RahyabSmsService
     {
-        private readonly string _userName;
+        private readonly RestClient _client;
         private readonly string _password;
         private readonly string _sendNumber;
-        private readonly RestClient _client;
+        private readonly string _userName;
 
         public RahyabSmsService(string userName, string password, string sendNumber)
         {

@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
-using Hasin.Taaghche.TaskScheduler.Helper;
+﻿using System;
 using System.Collections.Generic;
+using Hasin.Taaghche.TaskScheduler.Helper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Hasin.Taaghche.TaskScheduler.NotificationServices
 {
@@ -15,19 +15,13 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
         [JsonProperty(PropertyName = "receiver", NullValueHandling = NullValueHandling.Include)]
         public string Receiver { get; set; }
 
-        
-
-        public void Notifying(string message, string subject)
+        public object Clone()
         {
-            NotifyType.Factory().Send(Receiver, message, subject);
-        }
-
-
-
-        public bool Equals(Notification other)
-        {
-            return NotifyType == other?.NotifyType &&
-                   Receiver == other.Receiver;
+            return new Notification
+            {
+                NotifyType = NotifyType,
+                Receiver = Receiver
+            };
         }
 
         public bool Equals(Notification x, Notification y)
@@ -38,6 +32,19 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
         public int GetHashCode(Notification obj)
         {
             return obj.GetHashCode();
+        }
+
+
+        public bool Equals(Notification other)
+        {
+            return NotifyType == other?.NotifyType &&
+                   Receiver == other.Receiver;
+        }
+
+
+        public void Notifying(string message, string subject)
+        {
+            NotifyType.Factory().Send(Receiver, message, subject);
         }
 
         public override int GetHashCode()
@@ -66,16 +73,6 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices
         public static bool operator !=(Notification notifyA, Notification notifyB)
         {
             return !(notifyA == notifyB);
-        }
-
-
-        public object Clone()
-        {
-            return new Notification()
-            {
-                NotifyType = NotifyType,
-                Receiver = Receiver
-            };
         }
     }
 }

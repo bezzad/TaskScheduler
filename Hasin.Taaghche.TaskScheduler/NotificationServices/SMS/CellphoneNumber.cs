@@ -10,9 +10,8 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-        private static readonly ConcurrentDictionary<string, List<DateTime>> SendHistory = new ConcurrentDictionary<string, List<DateTime>>();
-
-        public string PhoneNumber { get; }
+        private static readonly ConcurrentDictionary<string, List<DateTime>> SendHistory =
+            new ConcurrentDictionary<string, List<DateTime>>();
 
         public CellphoneNumber(string phoneNumber)
         {
@@ -40,6 +39,8 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
             PhoneNumber = phoneNumber;
         }
 
+        public string PhoneNumber { get; }
+
         public bool IsSendingLimitExceeded()
         {
             List<DateTime> history;
@@ -58,11 +59,13 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
                 Logger.Warn($"MinuteSendingLimitExceeded for {PhoneNumber}");
                 return true;
             }
+
             if (history.Count(d => d > DateTime.Now.AddHours(-1)) >= 6)
             {
                 Logger.Warn($"HourSendingLimitExceeded for {PhoneNumber}");
                 return true;
             }
+
             if (history.Count(d => d > DateTime.Now.AddDays(-1)) >= 20)
             {
                 Logger.Warn($"DaySendingLimitExceeded for {PhoneNumber}");
@@ -85,6 +88,7 @@ namespace Hasin.Taaghche.TaskScheduler.NotificationServices.SMS
                 Logger.Warn($"Invalid send SMS request received. {exp.Message}");
                 return null;
             }
+
             return cellphone;
         }
     }

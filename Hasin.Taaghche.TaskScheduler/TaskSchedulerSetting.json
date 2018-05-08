@@ -179,8 +179,8 @@
   ],
   "notifications": [
     {
-      "notifyType": "email",
-      "receiver": "abolfazl.ansari@gmail.com, behzad.khosravifar@gmail.com, m.dehghani612@gmail.com, abouzarnouri@gmail.com" //
+      "notifyType": "sms",
+      "receiver": "09149149202" //
     },
     {
       "notifyType": "Slack",

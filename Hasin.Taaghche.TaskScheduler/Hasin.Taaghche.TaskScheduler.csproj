@@ -87,8 +87,8 @@
     <Reference Include="Hasin.Taaghche.Payment.Defs, Version=1.0.0.33, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hasin.Taaghche.Payment.Defs.1.0.0.33\lib\net46\Hasin.Taaghche.Payment.Defs.dll</HintPath>
     </Reference>
-    <Reference Include="IdentityModel, Version=3.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IdentityModel.3.6.1\lib\net452\IdentityModel.dll</HintPath>
+    <Reference Include="IdentityModel, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityModel.3.3.0\lib\net452\IdentityModel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
@@ -183,6 +183,7 @@
     <Compile Include="Core\ActionRunner.cs" />
     <Compile Include="Core\JobsManager.cs" />
     <Compile Include="Core\LogFailureAttribute.cs" />
+    <Compile Include="Helper\AssemblyInfo.cs" />
     <Compile Include="Helper\DatabaseHelper.cs" />
     <Compile Include="Helper\FileManager.cs" />
     <Compile Include="Helper\NotificationHelper.cs" />
@@ -233,8 +234,9 @@
     <EmbeddedResource Include="App_Data\installHangfireDatabase.sql" />
     <EmbeddedResource Include="NotificationServices\Email\EmailTemplate.html" />
     <None Include="app.manifest" />
-    <Content Include="TaskSchedulerSetting.json">
+    <Content Include="..\..\..\TaskSchedulerSetting.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>TaskSchedulerSetting.json</Link>
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>

@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -8,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Task Scheduler")]
 [assembly: AssemblyDescription("Manage and execute actions by Hangfire job runners.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hasin Tech")]
+[assembly: AssemblyCompany("Taaghche")]
 [assembly: AssemblyProduct("TaskScheduler")]
-[assembly: AssemblyCopyright("Copyright ©  2017-2018 Behzad Khosravifar")]
+[assembly: AssemblyCopyright("Copyright © 2017-2018 Behzad Khosravifar")]
 [assembly: AssemblyTrademark("Taaghche")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.7.5")]
-[assembly: AssemblyFileVersion("1.7.5")]
+[assembly: AssemblyVersion("1.7.7")]
+[assembly: AssemblyFileVersion("1.7.7")]

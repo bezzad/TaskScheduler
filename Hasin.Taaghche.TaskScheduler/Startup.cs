@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Web.Http;
 using AdoManager;
-using Owin;
 using Hangfire;
 using Hangfire.Logging;
 using Hangfire.Logging.LogProviders;
@@ -11,8 +10,10 @@ using Hangfire.SqlServer;
 using Hasin.Taaghche.TaskScheduler;
 using Hasin.Taaghche.TaskScheduler.Core;
 using Hasin.Taaghche.TaskScheduler.Helper;
+using Hasin.Taaghche.TaskScheduler.Properties;
 using Microsoft.Owin;
 using NLog.Owin.Logging;
+using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
 
@@ -22,9 +23,9 @@ namespace Hasin.Taaghche.TaskScheduler
     {
         public void Configuration(IAppBuilder app)
         {
-            var connString = Properties.Settings.Default.ServerConnectionString;
-            if(Debugger.IsAttached)
-                connString = Properties.Settings.Default.LocalConnectionString;
+            var connString = Settings.Default.ServerConnectionString;
+            if (Debugger.IsAttached)
+                connString = Settings.Default.LocalConnectionString;
 
             #region Configure NLog middleware
 
@@ -48,19 +49,19 @@ namespace Hasin.Taaghche.TaskScheduler
             AppDomain.CurrentDomain.SetData("DataDirectory",
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data"));
 
-            var script = FileManager.ReadResourceFile(Properties.Settings.Default.HangfireDbScript);
+            var script = FileManager.ReadResourceFile(Settings.Default.HangfireDbScript);
             var cm = new ConnectionManager(new Connection(connString));
             cm.CreateDatabaseIfNotExist(script);
 
-            GlobalConfiguration.Configuration.UseSqlServerStorage(connString, 
+            GlobalConfiguration.Configuration.UseSqlServerStorage(connString,
                     new SqlServerStorageOptions {QueuePollInterval = TimeSpan.FromSeconds(30)})
                 .UseFilter(new LogEverythingAttribute());
 
             // Read and start jobs
-            JobsManager.CheckupSetting(Properties.Settings.Default.SettingFileName, 30);
+            JobsManager.CheckupSetting(Settings.Default.SettingFileName, 30);
 
             app.UseHangfireDashboard("/hangfire");
-            app.UseHangfireServer(new BackgroundJobServerOptions()
+            app.UseHangfireServer(new BackgroundJobServerOptions
             {
                 ServerCheckInterval = TimeSpan.FromSeconds(30),
                 HeartbeatInterval = TimeSpan.FromSeconds(5)

@@ -341,7 +341,7 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://a.slack-edge.com/9c217/img/loading_hash_animation.gif")]
+        [global::System.Configuration.DefaultSettingValueAttribute(":robot_face:")]
         public string SlackIconUrl {
             get {
                 return ((string)(this["SlackIconUrl"]));
@@ -351,8 +351,8 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=.; Persist Security Info=False; Integrated Security=true; Initial Catalog=" +
-            "Task;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=.;Persist Security Info=False;Integrated Security=true;Initial Catalog=Tas" +
+            "k;")]
         public string LocalConnectionString {
             get {
                 return ((string)(this["LocalConnectionString"]));
@@ -362,11 +362,20 @@ namespace Hasin.Taaghche.TaskScheduler.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.; Initial Catalog=task; Persist Security Info=True; User ID=task; Pa" +
-            "ssword=CB3Wctg4RvdkL3jB;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog=task;Persist Security Info=True;User ID=task;Passwo" +
+            "rd=CB3Wctg4RvdkL3jB;")]
         public string ServerConnectionString {
             get {
                 return ((string)(this["ServerConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8002")]
+        public int Port {
+            get {
+                return ((int)(this["Port"]));
             }
         }
     }

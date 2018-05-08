@@ -11,6 +11,17 @@ namespace Hasin.Taaghche.TaskScheduler.Core
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
+        public void OnStateApplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
+        {
+            Logger.InfoFormat(
+                $"Job `{context.BackgroundJob?.Id}` state was changed from `{context.OldStateName}` to `{context.NewState?.Name}`");
+        }
+
+        public void OnStateUnapplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
+        {
+            Logger.InfoFormat($"Job `{context.BackgroundJob?.Id}` state `{context.OldStateName}` was unapplied.");
+        }
+
         public void OnCreating(CreatingContext context)
         {
             Logger.InfoFormat($"Creating a job based on method `{context.Job?.Method?.Name}`...");
@@ -18,7 +29,8 @@ namespace Hasin.Taaghche.TaskScheduler.Core
 
         public void OnCreated(CreatedContext context)
         {
-            Logger.InfoFormat($"Job that is based on method `{context.Job?.Method?.Name}` has been created with id `{context.BackgroundJob?.Id}`");
+            Logger.InfoFormat(
+                $"Job that is based on method `{context.Job?.Method?.Name}` has been created with id `{context.BackgroundJob?.Id}`");
         }
 
         public void OnPerforming(PerformingContext context)
@@ -33,21 +45,9 @@ namespace Hasin.Taaghche.TaskScheduler.Core
 
         public void OnStateElection(ElectStateContext context)
         {
-            var failedState = context.CandidateState as FailedState;
-            if (failedState != null)
-            {
-                Logger.WarnFormat($"Job `{context.BackgroundJob?.Id}` has been failed due to an exception `{failedState.Exception?.Message}`");
-            }
-        }
-
-        public void OnStateApplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
-        {
-            Logger.InfoFormat($"Job `{context.BackgroundJob?.Id}` state was changed from `{context.OldStateName}` to `{context.NewState?.Name}`");
-        }
-
-        public void OnStateUnapplied(ApplyStateContext context, IWriteOnlyTransaction transaction)
-        {
-            Logger.InfoFormat($"Job `{context.BackgroundJob?.Id}` state `{context.OldStateName}` was unapplied.");
+            if (context.CandidateState is FailedState failedState)
+                Logger.WarnFormat(
+                    $"Job `{context.BackgroundJob?.Id}` has been failed due to an exception `{failedState.Exception?.Message}`");
         }
     }
 }
