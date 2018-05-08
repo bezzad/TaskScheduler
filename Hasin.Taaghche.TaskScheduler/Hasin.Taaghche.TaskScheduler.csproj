@@ -234,9 +234,8 @@
     <EmbeddedResource Include="App_Data\installHangfireDatabase.sql" />
     <EmbeddedResource Include="NotificationServices\Email\EmailTemplate.html" />
     <None Include="app.manifest" />
-    <Content Include="..\..\..\TaskSchedulerSetting.json">
+    <Content Include="TaskSchedulerSetting.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>TaskSchedulerSetting.json</Link>
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
