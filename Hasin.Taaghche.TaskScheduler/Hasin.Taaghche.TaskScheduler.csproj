@@ -69,24 +69,6 @@
     <Reference Include="Hangfire.SqlServer, Version=1.6.19.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.SqlServer.1.6.19\lib\net45\Hangfire.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Hasin.Taaghche.Infrastructure.AuthenticationClient, Version=2.33.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hasin.Taaghche.Infrastructure.AuthenticationClient.2.33.0\lib\net46\Hasin.Taaghche.Infrastructure.AuthenticationClient.dll</HintPath>
-    </Reference>
-    <Reference Include="Hasin.Taaghche.Infrastructure.Common, Version=1.29.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hasin.Taaghche.Infrastructure.Common.1.29.0.2\lib\net46\Hasin.Taaghche.Infrastructure.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Hasin.Taaghche.Infrastructure.Log, Version=1.11.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hasin.Taaghche.Infrastructure.Log.1.11.0.1\lib\net46\Hasin.Taaghche.Infrastructure.Log.dll</HintPath>
-    </Reference>
-    <Reference Include="Hasin.Taaghche.Infrastructure.MotherShipModel, Version=1.9.0.46, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hasin.Taaghche.Infrastructure.MotherShipModel.1.9.0.46\lib\net45\Hasin.Taaghche.Infrastructure.MotherShipModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Hasin.Taaghche.Infrastructure.Serialization, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hasin.Taaghche.Infrastructure.Serialization.1.1.0.1\lib\net46\Hasin.Taaghche.Infrastructure.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="Hasin.Taaghche.Payment.Defs, Version=1.0.0.33, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hasin.Taaghche.Payment.Defs.1.0.0.33\lib\net46\Hasin.Taaghche.Payment.Defs.dll</HintPath>
-    </Reference>
     <Reference Include="IdentityModel, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IdentityModel.3.3.0\lib\net452\IdentityModel.dll</HintPath>
     </Reference>
@@ -179,7 +161,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\v1\MonitorController.cs" />
     <Compile Include="Core\ActionRunner.cs" />
     <Compile Include="Core\JobsManager.cs" />
     <Compile Include="Core\LogFailureAttribute.cs" />
@@ -223,12 +204,8 @@
     <Compile Include="NotificationServices\SystemNotification.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Utilities\ClientRequestHelper.cs" />
     <Compile Include="Utilities\Extensions.cs" />
-    <Compile Include="Utilities\IRangeData.cs" />
-    <Compile Include="Utilities\RangeData.cs" />
     <Compile Include="Utilities\RestSharpJsonNetSerializer.cs" />
-    <Compile Include="Utilities\V2MsClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_Data\installHangfireDatabase.sql" />

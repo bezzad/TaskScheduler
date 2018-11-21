@@ -179,7 +179,7 @@
   "notifications": [
     {
       "notifyType": "sms",
-      "receiver": "09149149202; 09122461695; 09125805273; 09359464593"
+      "receiver": "09149149202; 09354028149;"
     },
     {
       "notifyType": "Slack",
