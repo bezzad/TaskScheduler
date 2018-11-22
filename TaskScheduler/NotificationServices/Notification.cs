@@ -49,8 +49,7 @@ namespace TaskScheduler.NotificationServices
 
         public override int GetHashCode()
         {
-            return NotifyType.GetHashCode() ^
-                   Receiver.GetHashCode();
+            return NotifyType.GetHashCode() ^ Receiver.GetHashCode();
         }
 
         public override bool Equals(object obj)

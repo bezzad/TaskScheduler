@@ -111,17 +111,17 @@
       "notifyType": "sms",
       "receiver": "09149149202;"
     },
-    {
-      "notifyType": "email",
-      "receiver": "behzad.kh.2006@gmail.com;"
-    },
+    //{
+    //  "notifyType": "email",
+    //  "receiver": "behzad.kh.2006@gmail.com;"
+    //},
+    //{
+    //  "notifyType": "Slack",
+    //  "receiver": "alerts"
+    //},
     {
       "notifyType": "Telegram",
       "receiver": "106752126" // aa:81342321, 106752126, @taaghche_notification
-    },
-    {
-      "notifyType": "Slack",
-      "receiver": "alerts"
     }
   ]
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using TaskScheduler.Helper;
 using Telegram.Bot;
@@ -19,11 +20,9 @@ namespace TaskScheduler.NotificationServices.Telegram
             Bot = new TelegramBotClient(Password);
             Bot.StartReceiving();
             Bot.OnMessage += Bot_OnMessage;
-            Task.Run(async () =>
-            {
-                var me = await Bot.GetMeAsync();
-                Logger.Info($"The {me.Username} bot is running.");
-            });
+
+            var me = Task.Run(async () => await Bot.GetMeAsync()).Result;
+            Logger.Info($"The {me.Username} bot is running.");
         }
 
         public static TelegramBotClient Bot { get; set; }
@@ -34,20 +33,19 @@ namespace TaskScheduler.NotificationServices.Telegram
             if (string.IsNullOrEmpty(receiver))
                 return SystemNotification.InvalidOperation;
 
-            foreach (var id in receiver.SplitUp())
-                Task.Run(async () =>
+            Parallel.ForEach(receiver.SplitUp(), id =>
+            {
+                try
                 {
-                    try
-                    {
-                        await Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}", parseMode: ParseMode.Markdown);
-                        Logger.Info($"Telegram message sent to {id} id successful.");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Fatal(ex, $"Send telegram failed for telegram id: {id}");
-                        completed = false;
-                    }
-                });
+                    Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n {message}", parseMode: ParseMode.Markdown)
+                        .ContinueWith(result => Logger.Info($"Telegram message sent to {id} id successful."));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex, $"Send telegram failed for telegram id: {id}");
+                    completed = false;
+                }
+            });
 
             return completed
                 ? SystemNotification.SuccessfullyDone
@@ -59,12 +57,14 @@ namespace TaskScheduler.NotificationServices.Telegram
             if (string.IsNullOrEmpty(receiver)) return SystemNotification.InvalidOperation;
             var completed = true;
             var tasks = new List<Task>();
-            var ids = receiver.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
+            var ids = receiver.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var id in ids)
+            {
                 try
                 {
                     Logger.Info($"Sending telegram to id: {id} ...");
-                    tasks.Add(Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}", parseMode: ParseMode.Markdown));
+                    tasks.Add(Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n {message}",
+                        parseMode: ParseMode.Markdown));
                     Logger.Info($"Telegram message sent to {id} id successful.");
                 }
                 catch (Exception ex)
@@ -72,6 +72,7 @@ namespace TaskScheduler.NotificationServices.Telegram
                     completed = false;
                     Logger.Fatal(ex, $"Send telegram failed for telegram id: {id}");
                 }
+            }
 
             await Task.WhenAll(tasks.ToArray());
 

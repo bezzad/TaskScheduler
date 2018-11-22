@@ -70,13 +70,14 @@ namespace TaskScheduler.Model
         {
             if (Notifications == null || !Notifications.Any() || NotifyCondition == NotifyCondition.None) return;
 
-            var subject = $"{(Debugger.IsAttached ? "`DEBUG MODE`" : "")} **{Name}**";
-            var body = $"\n`Result`: `{result}` \n\n" +
-                       $"```\nAction: {ActionName}\n";
+            var subject = $"{(Debugger.IsAttached ? "`DEBUG MODE`" : "")} **{Name}**\n" +
+                          $"----------------------------------------";
+            var body = $"\nResult: `{result}` " +
+                       $"\nAction: `{ActionName}` \n";
 
             if (ActionParameters?.Any() == true)
             {
-                body += "Arguments: \n";
+                body += "Arguments: ```\n";
                 foreach (var arg in ActionParameters.Where((k, v) => !String.IsNullOrEmpty(v.ToString())))
                 {
                     var val = string.Concat(arg.Value.ToString()

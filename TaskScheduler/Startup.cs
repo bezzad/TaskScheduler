@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Web.Http;
 using AdoManager;
 using Hangfire;
@@ -57,9 +58,6 @@ namespace TaskScheduler
                     new SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(30) })
                 .UseFilter(new LogEverythingAttribute());
 
-            // Read and start jobs
-            JobsManager.CheckupSetting(Settings.Default.SettingFileName, 30);
-
             app.UseHangfireDashboard("/hangfire");
             app.UseHangfireServer(new BackgroundJobServerOptions
             {
@@ -68,7 +66,19 @@ namespace TaskScheduler
                 /*ServerName = "Hasin_Hangfire"*/
             }, JobStorage.Current);
 
+            // Read and start jobs
+            JobsManager.CheckupSetting(Settings.Default.SettingFileName, 30);
+
             #endregion
+
+            // Alert all notify receivers to know TaskScheduler restarted
+            if (JobsManager.Jobs?.Any() == true && JobsManager.Jobs[0].Notifications?.Any() == true)
+            {
+                foreach (var notify in JobsManager.Jobs[0].Notifications)
+                {
+                    notify.Notifying("`Application successful running...`", $"Task Scheduler v{GetType().Assembly.GetName().Version.ToString(3)} Restarted");
+                }
+            }
         }
     }
 }
