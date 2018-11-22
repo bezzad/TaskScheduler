@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using System.Threading.Tasks;
+using RestSharp;
 
 namespace TaskScheduler.NotificationServices.SMS
 {
@@ -26,6 +27,17 @@ namespace TaskScheduler.NotificationServices.SMS
             request.AddParameter("password", _password);
             request.AddParameter("username", _userName);
             _client.Execute(request);
+        }
+
+        public async Task SendSmsAsync(string receiveNumber, string message)
+        {
+            var request = new RestRequest("SendSMS.ashx", Method.POST);
+            request.AddParameter("from", _sendNumber);
+            request.AddParameter("to", receiveNumber);
+            request.AddParameter("text", message);
+            request.AddParameter("password", _password);
+            request.AddParameter("username", _userName);
+            await _client.ExecuteTaskAsync(request);
         }
     }
 }

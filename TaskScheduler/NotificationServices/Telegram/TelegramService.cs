@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TaskScheduler.Helper;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types.Enums;
 
 namespace TaskScheduler.NotificationServices.Telegram
 {
@@ -38,7 +39,7 @@ namespace TaskScheduler.NotificationServices.Telegram
                 {
                     try
                     {
-                        await Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}");
+                        await Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}", parseMode: ParseMode.Markdown);
                         Logger.Info($"Telegram message sent to {id} id successful.");
                     }
                     catch (Exception ex)
@@ -63,7 +64,7 @@ namespace TaskScheduler.NotificationServices.Telegram
                 try
                 {
                     Logger.Info($"Sending telegram to id: {id} ...");
-                    tasks.Add(Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}"));
+                    tasks.Add(Bot.SendTextMessageAsync(id.Trim(), $"{subject} \n\n {message}", parseMode: ParseMode.Markdown));
                     Logger.Info($"Telegram message sent to {id} id successful.");
                 }
                 catch (Exception ex)

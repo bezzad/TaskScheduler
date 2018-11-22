@@ -70,23 +70,23 @@ namespace TaskScheduler.Model
         {
             if (Notifications == null || !Notifications.Any() || NotifyCondition == NotifyCondition.None) return;
 
-            var subject = $"> {(Debugger.IsAttached ? "`DEBUG MODE`" : "")} *{Name}*";
-            var body = $"\n`Result`: ```{result}``` \n\n" +
-                       $"```Action: {ActionName}\n";
+            var subject = $"{(Debugger.IsAttached ? "`DEBUG MODE`" : "")} **{Name}**";
+            var body = $"\n`Result`: `{result}` \n\n" +
+                       $"```\nAction: {ActionName}\n";
 
             if (ActionParameters?.Any() == true)
             {
                 body += "Arguments: \n";
                 foreach (var arg in ActionParameters.Where((k, v) => !String.IsNullOrEmpty(v.ToString())))
                 {
-                    var val = String.Concat(arg.Value.ToString()
+                    var val = string.Concat(arg.Value.ToString()
                         .Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                         .Select(x => $"{x}\n\t"));
                     val = val.Remove(val.LastIndexOf('\t'));
                     body += $"  • {arg.Key}: {val}";
                 }
 
-                body = body.Replace("\"", "") + "```";
+                body = body.Replace("\"", "") + "\n```";
             }
 
             foreach (var notify in Notifications.Where(n => CompareByNotifyCondition(result)))
