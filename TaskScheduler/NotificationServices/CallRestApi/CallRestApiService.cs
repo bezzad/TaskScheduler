@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -10,16 +9,24 @@ using TaskScheduler.Helper;
 
 namespace TaskScheduler.NotificationServices.CallRestApi
 {
-    [Guid("1bb06225-093f-0f47-ff10-e880d4d940bc")]
     public class CallRestApiService : NotificationService
     {
-        public CallRestApiService(string clientId, string clientSecret, string authServerUrl)
-            : base(clientId, clientSecret, authServerUrl)
-        {
-        }
-
+        public new NotificationType NotificationType { get; } = NotificationType.CallRestApi;
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
+        public string AuthServerUrl { get; set; }
         public string AuthGrantType { get; set; }
         public string AuthScope { get; set; }
+
+        public CallRestApiService() { }
+
+        public CallRestApiService(string clientId, string clientSecret, string authServerUrl, bool isDefaultService = false)
+        {
+            ClientId = clientId;
+            ClientSecret = clientSecret;
+            AuthServerUrl = authServerUrl;
+            IsDefaultService = isDefaultService;
+        }
 
         public override SystemNotification Send(string receiver, string message, string subject)
         {
@@ -93,10 +100,10 @@ namespace TaskScheduler.NotificationServices.CallRestApi
         {
             try
             {
-                var authHead = $"{UserName}:{Password}".EncodeToBase64();
+                var authHead = $"{ClientId}:{ClientSecret}".EncodeToBase64();
 
                 var token = ActionRunner.CallRestApi(
-                    Sender,
+                    AuthServerUrl,
                     "POST",
                     new Dictionary<string, string>
                     {
@@ -117,13 +124,13 @@ namespace TaskScheduler.NotificationServices.CallRestApi
                 var iAccTok = token.IndexOf("{", StringComparison.OrdinalIgnoreCase);
                 token = token.Substring(iAccTok, token.Length - iAccTok);
                 token = token.Trim();
-                var tokenObj = (JObject) JsonConvert.DeserializeObject(token);
+                var tokenObj = (JObject)JsonConvert.DeserializeObject(token);
 
                 return tokenObj[tokenKey].ToString(Formatting.None).Replace("\"", "");
             }
             catch (Exception ex)
             {
-                Logger.Fatal(ex, $"Can not give any authentication token from {Sender}");
+                Logger.Fatal(ex, $"Can not give any authentication token from {AuthServerUrl}");
                 return null;
             }
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using TaskScheduler.Helper;
 using Telegram.Bot;
@@ -11,21 +10,36 @@ namespace TaskScheduler.NotificationServices.Telegram
 {
     public class TelegramService : NotificationService
     {
-        public TelegramService(string userName, string apiKey, string senderBot)
-            : base(userName, apiKey, senderBot)
+        protected TelegramBotClient Bot { get; set; }
+
+        public new NotificationType NotificationType { get; } = NotificationType.Telegram;
+        public string Username { get; set; }
+        public string ApiKey { get; set; }
+        public string SenderBot { get; set; }
+
+        public TelegramService() { }
+        public TelegramService(string username, string apiKey, string senderBot, bool isDefaultService = false)
         {
-            if (Bot != null) return;
-
-            Logger.Info("Running telegram bot...");
-            Bot = new TelegramBotClient(Password);
-            Bot.StartReceiving();
-            Bot.OnMessage += Bot_OnMessage;
-
-            var me = Task.Run(async () => await Bot.GetMeAsync()).Result;
-            Logger.Info($"The {me.Username} bot is running.");
+            Username = username;
+            ApiKey = apiKey;
+            SenderBot = senderBot;
+            IsDefaultService = isDefaultService;
+            Initial();
         }
 
-        public static TelegramBotClient Bot { get; set; }
+        public sealed override void Initial()
+        {
+            if (Bot == null)
+            {
+                Logger.Info("Running telegram bot...");
+                Bot = new TelegramBotClient(ApiKey);
+                Bot.StartReceiving();
+                Bot.OnMessage += Bot_OnMessage;
+
+                var me = Task.Run(async () => await Bot.GetMeAsync()).Result;
+                Logger.Info($"The {me.Username} bot is running.");
+            }
+        }
 
         public override SystemNotification Send(string receiver, string message, string subject)
         {
