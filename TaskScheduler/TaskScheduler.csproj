@@ -160,6 +160,7 @@
     <Compile Include="Model\Enum\JobType.cs" />
     <Compile Include="Model\JobsSetting.cs" />
     <Compile Include="Model\Recurring.cs" />
+    <Compile Include="Model\SettingWrapper.cs" />
     <Compile Include="NotificationServices\CallRestApi\CallRestApiService.cs" />
     <Compile Include="NotificationServices\Email\EmailService.cs" />
     <Compile Include="NotificationServices\INotificationService.cs" />

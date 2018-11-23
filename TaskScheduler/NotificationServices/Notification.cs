@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using TaskScheduler.Helper;
+using TaskScheduler.Core;
 
 namespace TaskScheduler.NotificationServices
 {
     public class Notification : IEquatable<Notification>, IEqualityComparer<Notification>, ICloneable
     {
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty(PropertyName = "notifyType", NullValueHandling = NullValueHandling.Include)]
-        public NotificationType NotifyType { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
+        public string NotificationServiceName { get; set; }
 
-        [JsonProperty(PropertyName = "receiver", NullValueHandling = NullValueHandling.Include)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
         public string Receiver { get; set; }
 
         public object Clone()
         {
             return new Notification
             {
-                NotifyType = NotifyType,
+                NotificationServiceName = NotificationServiceName,
                 Receiver = Receiver
             };
         }
@@ -37,19 +37,49 @@ namespace TaskScheduler.NotificationServices
 
         public bool Equals(Notification other)
         {
-            return NotifyType == other?.NotifyType &&
-                   Receiver == other.Receiver;
+            return NotificationServiceName == other?.NotificationServiceName &&
+                   Receiver == other?.Receiver;
         }
 
 
-        public void Notifying(string message, string subject)
+        public void Notify(string message, string subject)
         {
-            NotifyType.Factory().Send(Receiver, message, subject);
+            var service =
+                JobsManager.Setting.NotificationServices.FirstOrDefault(ns =>
+                    ns.ServiceName.Equals(NotificationServiceName, StringComparison.OrdinalIgnoreCase));
+
+            var ver = GetType().Assembly.GetName().Version.ToString(3);
+            subject = subject.Replace("{version}", ver);
+            message = message.Replace("{version}", ver);
+            service?.Send(Receiver, message, subject);
         }
+
+        public async Task NotifyAsync(string message, string subject)
+        {
+            var service = GetNotificationService();
+            if (service != null)
+            {
+                var ver = GetType().Assembly.GetName().Version.ToString(3);
+                subject = subject.Replace("{version}", ver);
+                message = message.Replace("{version}", ver);
+                await service.SendAsync(Receiver, message, subject);
+            }
+        }
+
+        public INotificationService GetNotificationService()
+        {
+            return 
+                JobsManager.Setting.NotificationServices.FirstOrDefault(ns =>
+                    ns.ServiceName.Equals(NotificationServiceName, StringComparison.OrdinalIgnoreCase));
+        }
+
 
         public override int GetHashCode()
         {
-            return NotifyType.GetHashCode() ^ Receiver.GetHashCode();
+            if (string.IsNullOrWhiteSpace(NotificationServiceName) || string.IsNullOrWhiteSpace(Receiver))
+                return 0;
+
+            return NotificationServiceName.GetHashCode() ^ Receiver.GetHashCode();
         }
 
         public override bool Equals(object obj)
