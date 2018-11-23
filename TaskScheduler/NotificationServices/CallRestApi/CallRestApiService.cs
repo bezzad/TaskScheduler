@@ -28,12 +28,6 @@ namespace TaskScheduler.NotificationServices.CallRestApi
             IsDefaultService = isDefaultService;
         }
 
-
-        public void Initial()
-        {
-
-        }
-
         public override SystemNotification Send(string receiver, string message, string subject)
         {
             try

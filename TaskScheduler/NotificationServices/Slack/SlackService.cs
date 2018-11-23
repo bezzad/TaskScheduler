@@ -8,11 +8,11 @@ namespace TaskScheduler.NotificationServices.Slack
 {
     public class SlackService : NotificationService
     {
+        protected SlackClient Client { get; set; }
         public new NotificationType NotificationType { get; } = NotificationType.Slack;
         public string SenderName { get; set; }
         public string WebhookUrl { get; set; }
         public string IconUrl { get; set; }
-        public SlackClient Client { get; set; }
 
         public SlackService() { }
         public SlackService(string sender, string webhookUrl, string icon, bool isDefaultService = false)
@@ -21,9 +21,10 @@ namespace TaskScheduler.NotificationServices.Slack
             WebhookUrl = webhookUrl;
             IconUrl = icon;
             IsDefaultService = isDefaultService;
+            Initial();
         }
 
-        public void Initial()
+        public sealed override void Initial()
         {
             if (Client == null)
                 Client = new SlackClient(WebhookUrl);
@@ -67,6 +68,8 @@ namespace TaskScheduler.NotificationServices.Slack
         {
             try
             {
+                subject = subject.Replace("**", "*");
+                message = message.Replace("**", "*");
                 Logger.Info($"Sending slack to #{receiver} channel ...");
                 var msg = new Message($"{subject} \n\n {message}", receiver, SenderName, IconUrl);
                 Client.Send(msg);

@@ -20,9 +20,10 @@ namespace TaskScheduler.NotificationServices.SMS
             Password = password;
             SenderNumber = sender;
             IsDefaultService = isDefaultService;
+            Initial();
         }
 
-        public void Initial()
+        public sealed override void Initial()
         {
             if (SenderNumber.Any(d => !(char.IsDigit(d) || d == '+')))
                 throw new ArgumentException(SenderNumber, "The sender number must be positive numbers!");

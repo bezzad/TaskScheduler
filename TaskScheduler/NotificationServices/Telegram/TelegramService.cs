@@ -10,8 +10,9 @@ namespace TaskScheduler.NotificationServices.Telegram
 {
     public class TelegramService : NotificationService
     {
+        protected TelegramBotClient Bot { get; set; }
+
         public new NotificationType NotificationType { get; } = NotificationType.Telegram;
-        public TelegramBotClient Bot { get; set; }
         public string Username { get; set; }
         public string ApiKey { get; set; }
         public string SenderBot { get; set; }
@@ -23,9 +24,10 @@ namespace TaskScheduler.NotificationServices.Telegram
             ApiKey = apiKey;
             SenderBot = senderBot;
             IsDefaultService = isDefaultService;
+            Initial();
         }
 
-        public async Task InitialAsync()
+        public sealed override void Initial()
         {
             if (Bot == null)
             {
@@ -34,7 +36,7 @@ namespace TaskScheduler.NotificationServices.Telegram
                 Bot.StartReceiving();
                 Bot.OnMessage += Bot_OnMessage;
 
-                var me = await Bot.GetMeAsync();
+                var me = Task.Run(async () => await Bot.GetMeAsync()).Result;
                 Logger.Info($"The {me.Username} bot is running.");
             }
         }

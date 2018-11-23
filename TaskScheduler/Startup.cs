@@ -88,7 +88,7 @@ namespace TaskScheduler
             {
                 foreach (var notify in JobsManager.Setting.Notifications)
                 {
-                    notify.Notify("`Application successful running...`", $"Task Scheduler v{GetType().Assembly.GetName().Version.ToString(3)} Restarted");
+                    notify.Notify("`Application successful running...`", "Task Scheduler {version}");
                 }
             }
         }

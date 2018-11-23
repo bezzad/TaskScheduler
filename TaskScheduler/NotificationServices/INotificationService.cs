@@ -20,5 +20,6 @@ namespace TaskScheduler.NotificationServices
         SystemNotification Send(string receiver, string message, string subject);
 
         Task<SystemNotification> SendAsync(string receiver, string message, string subject);
+        void Initial();
     }
 }

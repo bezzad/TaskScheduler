@@ -9,10 +9,10 @@ namespace TaskScheduler.NotificationServices
 {
     public class Notification : IEquatable<Notification>, IEqualityComparer<Notification>, ICloneable
     {
-        [JsonProperty(PropertyName = "notificationServiceName", NullValueHandling = NullValueHandling.Include)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
         public string NotificationServiceName { get; set; }
 
-        [JsonProperty(PropertyName = "receiver", NullValueHandling = NullValueHandling.Include)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Include)]
         public string Receiver { get; set; }
 
         public object Clone()
@@ -48,6 +48,9 @@ namespace TaskScheduler.NotificationServices
                 JobsManager.Setting.NotificationServices.FirstOrDefault(ns =>
                     ns.ServiceName.Equals(NotificationServiceName, StringComparison.OrdinalIgnoreCase));
 
+            var ver = GetType().Assembly.GetName().Version.ToString(3);
+            subject = subject.Replace("{version}", ver);
+            message = message.Replace("{version}", ver);
             service?.Send(Receiver, message, subject);
         }
 
@@ -55,7 +58,12 @@ namespace TaskScheduler.NotificationServices
         {
             var service = GetNotificationService();
             if (service != null)
+            {
+                var ver = GetType().Assembly.GetName().Version.ToString(3);
+                subject = subject.Replace("{version}", ver);
+                message = message.Replace("{version}", ver);
                 await service.SendAsync(Receiver, message, subject);
+            }
         }
 
         public INotificationService GetNotificationService()

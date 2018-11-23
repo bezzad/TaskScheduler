@@ -20,8 +20,8 @@
       "triggerOn": "0 * * * *", // every hour
       "notifications": [
         {
-          "notificationServiceName": "sms",
-          "receiver": "09149149202;"
+          "notificationServiceName": "RahyabSmsService",
+          "receiver": "09354028149;"
         }
       ]
     },
@@ -42,7 +42,13 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 * * * *" // every hour
+      "triggerOn": "0 * * * *", // every hour
+      "notifications": [
+        {
+          "notificationServiceName": "testSlack",
+          "receiver": "alerts;"
+        }
+      ]
     },
     {
       "jobType": "Recurring",
@@ -115,19 +121,19 @@
   "notifications": [
     {
       "notificationServiceName": "RahyabSmsService",
-      "receiver": "09149149202;"
+      "receiver": "09354028149;09123456789;"
     },
     //{
     //  "notificationServiceName": "taaghcheMailService",
     //  "receiver": "behzad.kh.2006@gmail.com;"
     //},
-    //{
-    //  "notificationServiceName": "testSlack",
-    //  "receiver": "alerts"
-    //},
+    {
+      "notificationServiceName": "testSlack",
+      "receiver": "alerts"
+    },
     {
       "notificationServiceName": "testTelegram",
-      "receiver": "106752126" // aa:81342321, 106752126, @taaghche_notification
+      "receiver": "106752126" // 12345678, @notification_channel
     }
   ],
   "notificationServices": [
@@ -155,7 +161,6 @@
     {
       "serviceName": "testTelegram",
       "notificationType": "TelegramService",
-      "bot": null,
       "username": "@taaghche_notification_bot",
       "apiKey": "331602122:AAE73HowIucecPTtXHybgCUtgs14VzrDPKY",
       "senderBot": "@taaghche_notification_bot",
@@ -164,10 +169,9 @@
     {
       "serviceName": "testSlack",
       "notificationType": "SlackService",
-      "senderName": "TaskScheduler v1.7.8",
-      "webhookUrl": "https://hooks.slack.com/services/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",
+      "senderName": "TaskScheduler {#version}",
+      "webhookUrl": "https://hooks.slack.com/services/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",
       "iconUrl": ":robot_face:",
-      "client": null,
       "isDefaultService": true
     },
     {

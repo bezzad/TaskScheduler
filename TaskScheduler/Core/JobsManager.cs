@@ -51,9 +51,7 @@ namespace TaskScheduler.Core
                     Nlogger.Info("Setting was not changed.");
                     return;
                 }
-
                 Nlogger.Info("Setting was changed, reset jobs...");
-
                 settingChanged = true;
 
                 // clear old jobs
@@ -112,6 +110,7 @@ namespace TaskScheduler.Core
             try
             {
                 var asm = Assembly.GetAssembly(typeof(IJob));
+                json = json.Replace("{#version}", asm.GetName().Version.ToString(3));
                 var setting = JsonConvert.DeserializeObject<JobsSetting>(json);
 
                 result.Jobs = new List<IJob>();
@@ -131,6 +130,7 @@ namespace TaskScheduler.Core
                         var service = asm.GetTypes()
                             .FirstOrDefault(t => t.Name.Equals(serviceType, StringComparison.OrdinalIgnoreCase));
                         var serviceObj = (INotificationService)ns.ToObject(service);
+                        serviceObj?.Initial();
                         result.NotificationServices.Add(serviceObj);
                     }
                     catch (Exception e)

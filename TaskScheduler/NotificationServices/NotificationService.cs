@@ -18,5 +18,6 @@ namespace TaskScheduler.NotificationServices
 
         public abstract SystemNotification Send(string receiver, string message, string subject);
         public abstract Task<SystemNotification> SendAsync(string receiver, string message, string subject);
+        public virtual void Initial() { }
     }
 }

@@ -38,9 +38,10 @@ namespace TaskScheduler.NotificationServices.Email
             Logo = logo;
             LogoUrl = logoUrl;
             IsDefaultService = isDefaultService;
+            Initial();
         }
 
-        public void Initial()
+        public sealed override void Initial()
         {
             if (Client == null)
             {
