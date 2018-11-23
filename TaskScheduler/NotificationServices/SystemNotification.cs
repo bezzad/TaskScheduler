@@ -9,34 +9,34 @@ namespace TaskScheduler.NotificationServices
         {
             Status = Status.Successful,
             Message = null,
-            AdditionalData = "عملیات با موفقیت انجام شد"
+            AdditionalData = "The operation successful completed."
         };
 
         public static readonly SystemNotification InternalError = new SystemNotification
         {
             Status = Status.BadContract,
-            Message = "خطایی در سیستم رخ داده است. لطفا دوباره تلاش کنید.",
+            Message = "One error occurred in system, Please try again.",
             AdditionalData = null
         };
 
         public static readonly SystemNotification InvalidOperation = new SystemNotification
         {
             Status = Status.BadContract,
-            Message = "درخواست شما قابل اجرا نیست",
+            Message = "Your request is invalid!",
             AdditionalData = null
         };
 
         public static readonly SystemNotification TooMuchRecipients = new SystemNotification
         {
             Status = Status.BadContract,
-            Message = "نمی‌توانید ایمیل را به بیش از ۹۹۹ نفر ارسال کنید",
+            Message = "You can't send email to more than 999 people.",
             AdditionalData = null
         };
 
         public static readonly SystemNotification SendingLimitExceeded = new SystemNotification
         {
             Status = Status.BadContract,
-            Message = "لطفا بعدا دوباره تلاش کنید",
+            Message = "Please try again later.",
             AdditionalData = null
         };
 

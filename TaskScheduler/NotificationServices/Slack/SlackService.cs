@@ -8,13 +8,26 @@ namespace TaskScheduler.NotificationServices.Slack
 {
     public class SlackService : NotificationService
     {
-        public SlackService(string userName, string webhookUrl, string icon)
-            : base(userName, webhookUrl, icon)
+        public new NotificationType NotificationType { get; } = NotificationType.Slack;
+        public string SenderName { get; set; }
+        public string WebhookUrl { get; set; }
+        public string IconUrl { get; set; }
+        public SlackClient Client { get; set; }
+
+        public SlackService() { }
+        public SlackService(string sender, string webhookUrl, string icon, bool isDefaultService = false)
         {
-            Client = new SlackClient(webhookUrl);
+            SenderName = sender;
+            WebhookUrl = webhookUrl;
+            IconUrl = icon;
+            IsDefaultService = isDefaultService;
         }
 
-        public static SlackClient Client { get; set; }
+        public void Initial()
+        {
+            if (Client == null)
+                Client = new SlackClient(WebhookUrl);
+        }
 
         public override SystemNotification Send(string receiver, string message, string subject)
         {
@@ -23,17 +36,8 @@ namespace TaskScheduler.NotificationServices.Slack
                 return SystemNotification.InvalidOperation;
 
             foreach (var id in receiver.SplitUp())
-                try
-                {
-                    var msg = new Message($"{subject} \n\n {message}", id, UserName, Sender);
-                    Client.Send(msg);
-                    Logger.Info($"Slack message sent to #{id} channel successful.");
-                }
-                catch (Exception ex)
-                {
-                    Logger.Fatal(ex, $"Send slack message failed for channel: #{id}");
+                if (!SendSingleSlackMessage(id, message, subject))
                     completed = false;
-                }
 
             return completed
                 ? SystemNotification.SuccessfullyDone
@@ -45,31 +49,35 @@ namespace TaskScheduler.NotificationServices.Slack
             var completed = true;
             if (string.IsNullOrEmpty(receiver)) return SystemNotification.InvalidOperation;
             var tasks = new List<Task>();
-            var ids = receiver.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var id in ids)
+            foreach (var id in receiver.SplitUp())
                 tasks.Add(new Task(() =>
                 {
-                    try
-                    {
-                        Logger.Info($"Sending slack to #{id} channel ...");
-
-                        var msg = new Message($"{subject} \n\n {message}", id, UserName, Sender);
-                        Client.Send(msg);
-
-                        Logger.Info($"Slack message sent to #{id} channel successful.");
-                    }
-                    catch (Exception ex)
-                    {
+                    if (!SendSingleSlackMessage(id, message, subject))
                         completed = false;
-                        Logger.Fatal(ex, $"Send telegram failed for telegram id: {id}");
-                    }
                 }));
             await Task.WhenAll(tasks.ToArray());
 
             return completed
                 ? SystemNotification.SuccessfullyDone
                 : SystemNotification.InternalError;
+        }
+
+        protected bool SendSingleSlackMessage(string receiver, string message, string subject)
+        {
+            try
+            {
+                Logger.Info($"Sending slack to #{receiver} channel ...");
+                var msg = new Message($"{subject} \n\n {message}", receiver, SenderName, IconUrl);
+                Client.Send(msg);
+                Logger.Info($"Slack message sent to #{receiver} channel successful.");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal(ex, $"Send telegram failed for telegram id: {receiver}");
+                return false;
+            }
         }
     }
 }

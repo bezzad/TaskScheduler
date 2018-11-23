@@ -9,6 +9,8 @@ using Hangfire.Logging;
 using Hangfire.Logging.LogProviders;
 using Hangfire.SqlServer;
 using Microsoft.Owin;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NLog.Owin.Logging;
 using Owin;
 using TaskScheduler;
@@ -24,6 +26,15 @@ namespace TaskScheduler
     {
         public void Configuration(IAppBuilder app)
         {
+            // settings will automatically be used by JsonConvert.SerializeObject/DeserializeObject
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            //
+            // set database connection strings
             var connString = Settings.Default.ServerConnectionString;
             if (Debugger.IsAttached)
                 connString = Settings.Default.LocalConnectionString;
@@ -67,16 +78,17 @@ namespace TaskScheduler
             }, JobStorage.Current);
 
             // Read and start jobs
-            JobsManager.CheckupSetting(Settings.Default.SettingFileName, 30);
+            JobsManager.CheckupSetting(Settings.Default.SettingFileName, 100);
 
             #endregion
 
+
             // Alert all notify receivers to know TaskScheduler restarted
-            if (JobsManager.Jobs?.Any() == true && JobsManager.Jobs[0].Notifications?.Any() == true)
+            if (JobsManager.Setting?.Notifications?.Any() == true)
             {
-                foreach (var notify in JobsManager.Jobs[0].Notifications)
+                foreach (var notify in JobsManager.Setting.Notifications)
                 {
-                    notify.Notifying("`Application successful running...`", $"Task Scheduler v{GetType().Assembly.GetName().Version.ToString(3)} Restarted");
+                    notify.Notify("`Application successful running...`", $"Task Scheduler v{GetType().Assembly.GetName().Version.ToString(3)} Restarted");
                 }
             }
         }

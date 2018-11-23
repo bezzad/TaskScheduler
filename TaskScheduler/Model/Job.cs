@@ -94,7 +94,7 @@ namespace TaskScheduler.Model
                 try
                 {
 #if !TestWithoutNotify
-                    notify.Notifying(body, subject);
+                    notify.Notify(body, subject);
 #endif
                 }
                 catch (Exception exp)

@@ -15,6 +15,15 @@ namespace TaskScheduler.Core
 {
     public static class JobsManager
     {
+        #region Properties
+
+        private static string JsonSetting { get; set; } = "";
+        private static readonly Logger Nlogger = LogManager.GetCurrentClassLogger();
+        public static SettingWrapper Setting { get; set; }
+
+        #endregion
+
+
         #region Constructors
 
         /// <summary>
@@ -53,7 +62,7 @@ namespace TaskScheduler.Core
                 //
                 // Add new jobs from setting file
                 JsonSetting = setting;
-                Jobs = DeserializeFromJson(JsonSetting);
+                Setting = DeserializeFromJson(JsonSetting);
 
                 RegisterJobs();
 
@@ -73,95 +82,87 @@ namespace TaskScheduler.Core
 
         #endregion
 
-        #region Properties
 
-        private static string JsonSetting { get; set; } = "";
-        private static readonly Logger Nlogger = LogManager.GetCurrentClassLogger();
-        public static List<IJob> Jobs { get; set; } = new List<IJob>();
-
-        #endregion
 
         #region Methods
 
         public static void RegisterJobs()
         {
-            if (Jobs?.Any() != true) return;
+            if (Setting?.Jobs?.Any() != true) return;
 
-            foreach (var job in Jobs) job?.Register();
+            foreach (var job in Setting.Jobs) job?.Register();
         }
 
         public static IJob AddJob(IJob job)
         {
-            Jobs.Add(job);
+            Setting.Jobs.Add(job);
             job.Register();
             return job;
         }
 
         public static string SerializeToJson()
         {
-            var result = new JobsSetting
-            {
-                Jobs = Jobs.Select(j => (object) j).ToList(),
-                Notifications = new List<Notification>()
-            };
-
-            //
-            // Find shared notifications between all jobs
-            if (result.Jobs?.Any() == true)
-            {
-                var notifications = ((IJob) result.Jobs.FirstOrDefault())?.Notifications;
-                if (notifications != null)
-                {
-                    foreach (var notify in notifications)
-                        if (result.Jobs.Skip(1).All(x => ((IJob) x).Notifications.Any(n => n == notify)))
-                            result.Notifications.Add(notify);
-
-                    //
-                    // Remove shared notifications from jobs
-                    foreach (var notify in result.Notifications)
-                    {
-                        var all = result.Jobs.All(j => ((IJob) j).Notifications.Remove(notify));
-                    }
-                }
-            }
-
-            return JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Setting == null ? "" : JsonConvert.SerializeObject(Setting, Formatting.Indented);
         }
 
-        public static List<IJob> DeserializeFromJson(string json)
+        public static SettingWrapper DeserializeFromJson(string json)
         {
-            var result = new List<IJob>();
+            var result = new SettingWrapper();
 
             try
             {
-                var jobAsm = Assembly.GetAssembly(typeof(IJob));
-
+                var asm = Assembly.GetAssembly(typeof(IJob));
                 var setting = JsonConvert.DeserializeObject<JobsSetting>(json);
 
-                if (setting?.Jobs == null) return null;
+                result.Jobs = new List<IJob>();
+                result.NotificationServices = new List<INotificationService>();
+                result.Notifications = setting.Notifications;
 
-                foreach (JObject j in setting.Jobs)
+                if (setting.Jobs == null || setting.NotificationServices == null) return null;
+                //
+                // parse notification services to real type
+                foreach (JObject ns in setting.NotificationServices)
+                {
                     try
                     {
-                        var jobTypeName = j.GetValue("jobType")?.ToString();
+                        var serviceType = ns.GetValue("notificationType")?.ToString();
+                        if (string.IsNullOrWhiteSpace(serviceType)) continue;
 
-                        if (string.IsNullOrEmpty(jobTypeName)) continue;
-
-                        var jobType =
-                            jobAsm.GetTypes()
-                                .FirstOrDefault(t => t.Name.Equals(jobTypeName, StringComparison.OrdinalIgnoreCase));
-                        var jobObj = (IJob) j.ToObject(jobType);
-                        //
-                        // if the job hasn't any notification and exist at last one public notification 
-                        // then insert public notifications
-                        if (jobObj != null && jobObj.Notifications?.Any() != true &&
-                            setting.Notifications?.Any() == true) jobObj.Notifications = setting.Notifications;
-                        result.Add(jobObj);
+                        var service = asm.GetTypes()
+                            .FirstOrDefault(t => t.Name.Equals(serviceType, StringComparison.OrdinalIgnoreCase));
+                        var serviceObj = (INotificationService)ns.ToObject(service);
+                        result.NotificationServices.Add(serviceObj);
                     }
                     catch (Exception e)
                     {
                         Nlogger.Error(e);
                     }
+                }
+                //
+                // parse jobs to real type
+                foreach (JObject j in setting.Jobs)
+                {
+                    try
+                    {
+                        var jobTypeName = j.GetValue("jobType")?.ToString();
+
+                        if (string.IsNullOrWhiteSpace(jobTypeName)) continue;
+
+                        var jobType = asm.GetTypes()
+                                .FirstOrDefault(t => t.Name.Equals(jobTypeName, StringComparison.OrdinalIgnoreCase));
+                        var jobObj = (IJob)j.ToObject(jobType);
+                        //
+                        // if the job hasn't any notification and exist at last one public notification 
+                        // then insert public notifications
+                        if (jobObj != null && jobObj.Notifications?.Any() != true &&
+                            setting.Notifications?.Any() == true) jobObj.Notifications = setting.Notifications;
+                        result.Jobs.Add(jobObj);
+                    }
+                    catch (Exception e)
+                    {
+                        Nlogger.Error(e);
+                    }
+                }
             }
             catch (Exception exp)
             {
