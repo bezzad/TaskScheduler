@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Task Scheduler")]
 [assembly: AssemblyDescription("Manage and execute actions by Hangfire job runners.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Taaghche")]
+[assembly: AssemblyCompany("bezzad")]
 [assembly: AssemblyProduct("TaskScheduler")]
 [assembly: AssemblyCopyright("Copyright © 2017-2018 Behzad Khosravifar")]
-[assembly: AssemblyTrademark("Taaghche")]
+[assembly: AssemblyTrademark("bezzad")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
