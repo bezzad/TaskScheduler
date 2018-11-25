@@ -3,31 +3,6 @@
     {
       "jobType": "Recurring",
       "enable": true,
-      "name": "purchese checker (method: bpm)",
-      "description": "Call purchese web api every hour",
-      "actionName": "CallRestApi",
-      "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/payment",
-        "httpMethod": "GET",
-        "queryParameters": {
-          "duration": 60,
-          "min": 0,
-          "method": "bpm"
-        }
-      },
-      "notifyCondition": "NotEquals",
-      "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 * * * *", // every hour
-      "notifications": [
-        {
-          "notificationServiceName": "RahyabSmsService",
-          "receiver": "09354028149;"
-        }
-      ]
-    },
-    {
-      "jobType": "Recurring",
-      "enable": true,
       "name": "max-purchese checker (per hour)",
       "description": "Call purchese web api every hour for max purchase",
       "actionName": "CallRestApi",
@@ -84,23 +59,7 @@
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 */2 * * *" // every 120 min
-    },
-    {
-      "jobType": "Recurring",
-      "enable": true,
-      "name": "RabbitMQ uptime Checker",
-      "description": "Check rabbitmq uptime by sending sample data",
-      "actionName": "CallRestApi",
-      "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/rabbitmq",
-        "queryParameters": {
-        },
-        "httpMethod": "GET"
-      },
-      "notifyCondition": "NotEquals",
-      "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "*/5 * * * *" // every 5 min
+      "triggerOn": "0 */2 * * *" // every 2 hours
     },
     {
       "jobType": "Recurring",
@@ -133,7 +92,7 @@
     },
     {
       "notificationServiceName": "testTelegram",
-      "receiver": "12345678, @notification_channel"
+      "receiver": "106752126, @telester"
     }
   ],
   "notificationServices": [
@@ -161,17 +120,17 @@
     {
       "serviceName": "testTelegram",
       "notificationType": "TelegramService",
-      "username": "@notification_bot",
-      "apiKey": "012345678:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-      "senderBot": "@notification_bot",
+      "username": "@telesterbot",
+      "apiKey": "684394290:AAFg3Ht1EtNB7iYe9V_VVxKCEVMP-lSjycA",
+      "senderBot": "@telesterbot",
       "isDefaultService": true
     },
     {
       "serviceName": "testSlack",
       "notificationType": "SlackService",
       "senderName": "TaskScheduler {#version}",
-      "webhookUrl": "https://hooks.slack.com/services/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",
-      "iconUrl": ":robot_face:",
+      "webhookUrl": "https://hooks.slack.com/services/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",
+      "iconUrl": ":robot_face:", // or set URL like: "https://a.slack-edge.com/9c217/img/loading_hash_animation.gif"
       "isDefaultService": true
     },
     {

@@ -2,18 +2,18 @@
 using Newtonsoft.Json;
 using TaskScheduler.NotificationServices;
 
-namespace TaskScheduler.Model
+namespace TaskScheduler.Jobs
 {
-    public class SettingWrapper
+    public class JobsSetting
     {
         [JsonProperty(PropertyName = "jobs", NullValueHandling = NullValueHandling.Include,
             Required = Required.AllowNull)]
-        public IList<IJob> Jobs { get; set; }
+        public IList<object> Jobs { get; set; }
 
         [JsonProperty(PropertyName = "notifications", NullValueHandling = NullValueHandling.Ignore)]
         public IList<Notification> Notifications { get; set; } // Notification on result events
 
         [JsonProperty(PropertyName = "notificationServices", NullValueHandling = NullValueHandling.Ignore)]
-        public IList<INotificationService> NotificationServices { get; set; } // Notification services data
+        public IList<object> NotificationServices { get; set; } // Notification services data
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using Hangfire;
 using NLog;
-using TaskScheduler.Model.Enum;
 
-namespace TaskScheduler.Model
+namespace TaskScheduler.Jobs
 {
     /// <summary>
     ///     Fire-and-forget jobs are executed only once and almost immediately after creation.
