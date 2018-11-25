@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using RestSharp;
 using TaskScheduler.Helper;
-using TaskScheduler.Model;
+using TaskScheduler.Jobs;
 using TaskScheduler.NotificationServices;
 
 namespace TaskScheduler.Core

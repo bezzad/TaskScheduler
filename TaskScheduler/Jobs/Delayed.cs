@@ -2,9 +2,8 @@
 using System.Globalization;
 using Hangfire;
 using NLog;
-using TaskScheduler.Model.Enum;
 
-namespace TaskScheduler.Model
+namespace TaskScheduler.Jobs
 {
     /// <summary>
     ///     Delayed jobs are executed only once too, but not immediately, after a certain time interval.

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using TaskScheduler.Model.Enum;
 using TaskScheduler.NotificationServices;
 
-namespace TaskScheduler.Model
+namespace TaskScheduler.Jobs
 {
     public interface IJob
     {

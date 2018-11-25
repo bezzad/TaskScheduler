@@ -1,9 +1,8 @@
 ﻿using System;
 using Hangfire;
 using NLog;
-using TaskScheduler.Model.Enum;
 
-namespace TaskScheduler.Model
+namespace TaskScheduler.Jobs
 {
     /// <summary>
     ///     Recurring jobs fire many times on the specified CRON schedule. as <see cref="Hangfire.Cron" />

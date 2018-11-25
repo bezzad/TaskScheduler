@@ -1,4 +1,4 @@
-﻿namespace TaskScheduler.Model.Enum
+﻿namespace TaskScheduler.Jobs
 {
     /// <summary>
     ///     Hangfire Job Types

@@ -5,10 +5,9 @@ using System.Linq;
 using System.ServiceModel;
 using NLog;
 using TaskScheduler.Core;
-using TaskScheduler.Model.Enum;
 using TaskScheduler.NotificationServices;
 
-namespace TaskScheduler.Model
+namespace TaskScheduler.Jobs
 {
     public class Job : IJob
     {

@@ -1,69 +1,111 @@
 # Task Scheduler
 
-Dynamic Task Scheduler as windows service
+Dynamic Task Scheduler as windows service.
 
-# How to work
+This service can to send your notifications at the special time and jobs conditions and results.
+You must provide `Jobs`, `Notifications`, `NotificationServices` in the setting file to execute this application.
+The setting file's checked every `100 seconds` to set new jobs or remove some services if that changed. So you should wait for 2 minute atleast to see your changed. The application worked based on [Hangfire](https://www.hangfire.io/).
 
-For install Task Scheduler service on windows, run it as Administrator CMD and run the these codes:
+--------------
+
+## How to work
+
+For install Task Scheduler service on windows, run CMD as administrator and execute the below codes:
 
 `$ TaskScheduler.exe install start`
 
-or execute `Install.bat` file in from root folder.
-And for Uninstall app:
+or run `Install.bat` file in from root folder.
+Now you can use the application and enjoy it;
 
-```
+For Uninstall app:
+
+```bash
 $ sc stop TaskScheduler
 $ sc delete TaskScheduler
 ```
 
-or execute `Uninstall.bat` file in from root folder.
+or run `Uninstall.bat` file in from root folder.
 
-# How to Create Slack WebhookUrl
+--------------
 
-Please see [this helpful](https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack) address to create your own incoming WebHooks for Slack.
+## How to registering for your WebHook Url with Slack
 
-# How to add jobs and notification services to setting file
+[Click here to set up an incoming WebHook](https://my.slack.com/services/new/incoming-webhook/)
+
+* Sign in to Slack.
+* Choose a channel to post to.
+* Then click on the green button `Add Incoming WebHooks integration`.
+* You will be given a WebHook Url. Keep this private. Use it when you set up the Slack Notification Service.
+
+--------------
+
+## How to use or create new Telegram notification service
+
+In the `notificationServices` setting you can add your own services like telegram service, for example:
+
+```json
+"notificationServices": [
+  //...
+  {
+        "serviceName": "testTelegram", // is notification service name which called from notifications
+        "notificationType": "TelegramService", // declare service action type and is must important to have correct type.
+        "username": "@NameOfBot",
+        "apiKey": "684394290:AAFg3Ht1EtNB7iYe9V_VVxKCEVMP-lSjycA",
+        "senderBot": "@NameOfBot",
+        "isDefaultService": true // can be used for system notifications
+  }
+  //...
+]
+```
+
+* First [create a **Telegram Bot**](https://core.telegram.org/bots#creating-a-new-bot) from [BotFather](https://telegram.me/botfather).
+
+* Get the Bot API token from BotFather. The token is a string along the lines of `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw` that is required to authorize the bot and send requests to the Bot API.
+  
+* Set the `apiKey` property of service by api token and set the bot name in `senderBot` property;
+
+Add your bot as administrator user to channel or group which you want to send message or notification (This is not available in Telegram Desktop version);
+
+Enter channel or group name like @testChannel in the notification receiver. for example:
+
+```json
+"notifications": [
+    //...
+    {
+      "notificationServiceName": "testTelegram",
+      "receiver": "123456789, @testChannel"
+    }
+    //...
+  ],
+```
+
+--------------
+
+## How to add jobs and notification services to setting file
 
 Please change the `TaskSchedulerSetting.json` file as well as for what you want to execute and notifying.
 This file have 3 part:
 
-* list of your jobs
+* list of your jobs by types:
+  * __FireAndForget__ (this jobs are executed only once and almost immediatelyafter creation)
+  * __Delayed__ (this jobs are executed only once too, but not immediately, after a certain time interval)
+  * __Recurring__ (this jobs fire many times on the specified schedule)
 * list of default notifications receivers
-* list of notification services
+* list of notification services by type:
+  * __Email__ (this service provide send mail from your special mail service data)
+  * __Sms__ (this is a Short Message Service provider)
+  * __Telegram__ (this service is for send notifications from a telegram bot to a channel or group which the bot is administrator user member of that)
+  * __Slack__ (this service provide a webhook url to send notifications to your slack channels)
+  * __CallRestApi__ (is a provider to call or send notifications for your Restfull APIs, must times used for monitoring the APIs)
 
 For example of the below setting, you can seen that slack notification service defined in `notificationServices` part and by type `SlackService` and name `testSlack` which called from `notifications` part for service provider.
 
 And in `notifications` part used `SlackService` for `alerts` channel as notification receiver. This part can defined notifications to all jobs as deault receiver, but if a job have self notification definition, so just will send notify to that.
 
-``` 
+```json
 
 {
   "jobs": [
-    {
-      "jobType": "Recurring",
-      "enable": true,
-      "name": "purchese checker (method: bpm)",
-      "description": "Call purchese web api every hour",
-      "actionName": "CallRestApi",
-      "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/payment",
-        "httpMethod": "GET",
-        "queryParameters": {
-          "duration": 60,
-          "min": 0,
-          "method": "bpm"
-        }
-      },
-      "notifyCondition": "NotEquals",
-      "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 * * * *", // every hour
-      "notifications": [
-        {
-          "notificationServiceName": "RahyabSmsService",
-          "receiver": "09354028149;"
-        }
-      ]
-    },
     {
       "jobType": "Recurring",
       "enable": true,
@@ -92,24 +134,6 @@ And in `notifications` part used `SlackService` for `alerts` channel as notifica
     {
       "jobType": "Recurring",
       "enable": true,
-      "name": "download checker",
-      "description": "Call download web api every 30 minute",
-      "actionName": "CallRestApi",
-      "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/download",
-        "httpMethod": "GET",
-        "queryParameters": {
-          "duration": 30,
-          "value": 4.0
-        }
-      },
-      "notifyCondition": "NotEquals",
-      "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "*/30 * * * *" // every 30 minutes
-    },
-    {
-      "jobType": "Recurring",
-      "enable": true,
       "name": "User Account Creates Checker",
       "description": "Check users account create count per minutes",
       "actionName": "CallRestApi",
@@ -123,23 +147,7 @@ And in `notifications` part used `SlackService` for `alerts` channel as notifica
       },
       "notifyCondition": "NotEquals",
       "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "0 */2 * * *" // every 120 min
-    },
-    {
-      "jobType": "Recurring",
-      "enable": true,
-      "name": "RabbitMQ uptime Checker",
-      "description": "Check rabbitmq uptime by sending sample data",
-      "actionName": "CallRestApi",
-      "actionParameters": {
-        "url": "http://localhost:8002/v1/monitor/rabbitmq",
-        "queryParameters": {
-        },
-        "httpMethod": "GET"
-      },
-      "notifyCondition": "NotEquals",
-      "notifyConditionResult": "OK: \"\"",
-      "triggerOn": "*/5 * * * *" // every 5 min
+      "triggerOn": "0 */2 * * *" // every 2 hours
     },
     {
       "jobType": "Recurring",
@@ -172,7 +180,7 @@ And in `notifications` part used `SlackService` for `alerts` channel as notifica
     },
     {
       "notificationServiceName": "testTelegram",
-      "receiver": "12345678, @notification_channel"
+      "receiver": "106752126, @telester"
     }
   ],
   "notificationServices": [
@@ -192,7 +200,7 @@ And in `notifications` part used `SlackService` for `alerts` channel as notifica
       "smtpUrl": "smtp.mailgun.org",
       "smtpPort": 587,
       "logo": null,
-      "logoUrl": null,
+      "logoUrl": "https://a.slack-edge.com/9c217/img/loading_hash_animation.gif",
       "clickUrl": "https://test.com",
       "unsubscribeUrl": "http://api.test.com/unsubscribe/?mail={receiver}",
       "isDefaultService": true
@@ -200,18 +208,18 @@ And in `notifications` part used `SlackService` for `alerts` channel as notifica
     {
       "serviceName": "testTelegram",
       "notificationType": "TelegramService",
-      "username": "@notification_bot",
-      "apiKey": "012345678:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-      "senderBot": "@notification_bot",
+      "username": "@telesterbot",
+      "apiKey": "684394290:AAFg3Ht1EtNB7iYe9V_VVxKCEVMP-lSjycA",
+      "senderBot": "@telesterbot",
       "isDefaultService": true
     },
     {
       "serviceName": "testSlack",
       "notificationType": "SlackService",
       "senderName": "TaskScheduler {#version}",
-      "webhookUrl": "https://hooks.slack.com/services/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",
+      "webhookUrl": "https://hooks.slack.com/services/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",
       "iconUrl": ":robot_face:",
-      "isDefaultService": true
+      "isDefaultService": false
     },
     {
       "serviceName": "CallRestApi",
