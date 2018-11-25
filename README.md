@@ -2,9 +2,9 @@
 
 Dynamic Task Scheduler as windows service.
 
-This service can send your notifications at the special time and jobs conditions and results.
+This service can send your notifications at a special time or according by resluts of jobs conditions.
 You must provide `Jobs`, `Notifications`, `NotificationServices` in the setting file to execute this application.
-The setting file's checked every `100 seconds` to set new jobs or remove some services if that changed. So you should wait for 2 minute atleast to see your changed. The application worked based on [Hangfire](https://www.hangfire.io/).
+The setting file's checked every `100 seconds` to set new jobs or remove some services if that changed. So you should wait for 2 minute atleast to see your changed. The application worked based on [Hangfire](https://www.hangfire.io/)and SQL Server.
 
 --------------
 
