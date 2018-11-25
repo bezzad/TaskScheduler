@@ -2,7 +2,7 @@
 
 Dynamic Task Scheduler as windows service.
 
-This service can to send your notifications at the special time and jobs conditions and results.
+This service can send your notifications at the special time and jobs conditions and results.
 You must provide `Jobs`, `Notifications`, `NotificationServices` in the setting file to execute this application.
 The setting file's checked every `100 seconds` to set new jobs or remove some services if that changed. So you should wait for 2 minute atleast to see your changed. The application worked based on [Hangfire](https://www.hangfire.io/).
 
@@ -98,9 +98,9 @@ This file have 3 part:
   * __Slack__ (this service provide a webhook url to send notifications to your slack channels)
   * __CallRestApi__ (is a provider to call or send notifications for your Restfull APIs, must times used for monitoring the APIs)
 
-For example of the below setting, you can seen that slack notification service defined in `notificationServices` part and by type `SlackService` and name `testSlack` which called from `notifications` part for service provider.
+For example of the below setting, you can see that slack notification service defined in `notificationServices` part and by type `SlackService` and name `testSlack` which called from `notifications` part for service provider.
 
-And in `notifications` part used `SlackService` for `alerts` channel as notification receiver. This part can defined notifications to all jobs as deault receiver, but if a job have self notification definition, so just will send notify to that.
+And in `notifications` part used `SlackService` for `alerts` channel as notification receiver. This part can define notifications to all jobs as deault receiver, but if a job have self notification definition, so just will send notify to that.
 
 ```json
 
