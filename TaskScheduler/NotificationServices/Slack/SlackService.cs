@@ -68,8 +68,8 @@ namespace TaskScheduler.NotificationServices.Slack
         {
             try
             {
-                subject = subject.Replace("**", "*");
-                message = message.Replace("**", "*");
+                subject = subject.Replace("**", "*").Replace("\\", "/");
+                message = message.Replace("**", "*").Replace("\\", "/");
                 Logger.Info($"Sending slack to #{receiver} channel ...");
                 var msg = new Message($"{subject} \n\n {message}", receiver, SenderName, IconUrl);
                 Client.Send(msg);
