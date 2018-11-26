@@ -181,9 +181,17 @@ namespace TaskScheduler.Core
 
                 Nlogger.Info($"Starting [{fileName}] ...");
                 var proc = Process.Start(start);
-                return proc == null
-                    ? $"Can not start [{fileName}]!"
-                    : $"Started [{proc.ProcessName}] process by id: {proc.Id}";
+                var interval = 500;
+                while (!proc?.HasExited == true)
+                {
+                    Nlogger.Info("Sleep for process ending ...");
+                    System.Threading.Thread.Sleep(interval);
+                    interval += 1000;
+                    if (interval > 5000)
+                        break;
+                }
+
+                return proc?.HasExited == true ? proc?.ExitCode.ToString() : "1";
             }
             catch (Exception exp)
             {
