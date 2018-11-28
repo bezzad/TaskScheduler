@@ -178,11 +178,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Service References\GamamnSmsService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="NotificationServices\SMS\CellphoneNumber.cs" />
     <Compile Include="NotificationServices\SMS\SmsService.cs" />
     <Compile Include="NotificationServices\Status.cs" />
@@ -203,13 +198,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Service References\GamamnSmsService\sms.disco" />
-    <None Include="Service References\GamamnSmsService\configuration91.svcinfo" />
-    <None Include="Service References\GamamnSmsService\configuration.svcinfo" />
-    <None Include="Service References\GamamnSmsService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -220,46 +208,6 @@
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\GamamnSmsService\sms.wsdl" />
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.DataSendOut.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doCheckClientIDResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doGetDeliveryOlderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doGetDeliveryResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doGetInfoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doReceiveSMSArrayResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doReceiveSMSResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doSendArraySMSResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doSendSMSArrayCResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.doSendSMSResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.getInfoXMLResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.HelloWorldResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\GamamnSmsService\TaskScheduler.GamamnSmsService.MessageReceive.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -276,12 +224,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\GamamnSmsService\" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
