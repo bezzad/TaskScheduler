@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace TaskScheduler.Utilities
+namespace TaskScheduler.Helper
 {
-    internal static class Extensions
+    internal static class HttpHelper
     {
         public static bool IsSuccessful(this IRestResponse response)
         {
