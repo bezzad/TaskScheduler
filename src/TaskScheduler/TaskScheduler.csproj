@@ -185,7 +185,6 @@
     <Compile Include="Service.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Helper\HttpHelper.cs" />
-    <Compile Include="Utilities\RestSharpJsonNetSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_Data\installHangfireDatabase.sql" />
