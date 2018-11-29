@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("bezzad")]
 [assembly: AssemblyProduct("TaskScheduler")]
-[assembly: AssemblyCopyright("Copyright © 2017-2018 Behzad Khosravifar")]
+[assembly: AssemblyCopyright("Copyright © 2017-2019 Behzad Khosravifar")]
 [assembly: AssemblyTrademark("bezzad")]
 [assembly: AssemblyCulture("")]
 
